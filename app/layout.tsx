@@ -4,6 +4,7 @@ import "@/app/globals.css";
 import NextTopLoader from "nextjs-toploader";
 import ToasterProvider from "@/frontend/providers/ToasterProvider";
 import { Providers } from "@/components/theme/providers";
+import { GoogleTagManager } from "@next/third-parties/google";
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -28,6 +29,7 @@ export default async function RootLayout({
 }>) {
   return (
     <html lang="en" className={montserrat.className} suppressHydrationWarning>
+      <GoogleTagManager gtmId="GTM-MP378SLG" />
       <body className="">
         <NextTopLoader color="#FF5956" height={3} showSpinner={false}/>
         <ToasterProvider />
