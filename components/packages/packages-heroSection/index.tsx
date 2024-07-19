@@ -8,8 +8,13 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import React, { useCallback, useState } from 'react';
 import qs from 'query-string';
 import { IoLocationSharp } from 'react-icons/io5';
+import { SafeListing } from '@/frontend/types';
 
-const PackagesHeroSection = () => {
+interface PackagesHeroSectionProps {
+    listings: SafeListing;
+};
+
+const PackagesHeroSection: React.FC<PackagesHeroSectionProps> = ({ listings }) => {
 
     const [selectedLocation, setSelectedLocation] = useState<string>('');
 
@@ -48,14 +53,29 @@ const PackagesHeroSection = () => {
 
     return (
         <ClientOnly>
-            <div className='w-full h-[200px] sm:h-[250px] md:h-[300px] lg:h-[350px] xl:h-[400px] rounded-xl relative'>
-                <Image
-                    fill
-                    src="/packageHeroBg.jpg"
-                    alt='Package Image'
-                    className='object-cover w-full'
-                />
-            </div>
+            <Section className="mt-16 !p-0 flex flex-col items-center">
+                <div
+                    className={`w-full h-[200px] sm:h-[250px] md:h-[300px] lg:h-[350px] xl:h-[400px] relative`}
+                >
+                    <Image
+                        src="/packageHeroBg.jpg"
+                        width={4240}
+                        height={2832}
+                        alt="hero_bg"
+                        priority
+                        quality={100}
+                        className="w-[100vw] h-full object-cover select-none"
+                    />
+                    <div className="absolute w-full h-full bg-black top-0 opacity-60 flex justify-center items-center"></div>
+                    {/* <div className="absolute w-full h-full top-0 flex flex-col gap-10 justify-center items-center">
+                        <span
+                            className={`text-5xl md:text-6xl lg:text-7xl xl:text-8xl text-white transition font-semibold`}
+                        >
+                            All Packages
+                        </span>
+                    </div> */}
+                </div>
+            </Section>
             <Section>
                 <Container className='w-full relative'>
                     <div className='absolute -top-[67px] bg-custom-sbl dark:bg-custom-sbd shadow dark:shadow-white/25 py-4 px-6 rounded-t-xl'>
