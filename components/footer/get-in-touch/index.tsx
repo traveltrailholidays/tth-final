@@ -39,6 +39,13 @@ const GetInTouchFooter = () => {
                         href='mailto:support@traveltrailholidays.com'
                         exact
                         text='support@traveltrailholidays.com'
+                        classes='hidden xs:flex'
+                    />
+                    <ActiveLink
+                        href='mailto:support@traveltrailholidays.com'
+                        exact
+                        text='support @traveltrailholidays .com'
+                        classes='xs:hidden'
                     />
                 </div>
                 <div className='flex gap-1'>

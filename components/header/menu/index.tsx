@@ -53,7 +53,7 @@ const Menu: React.FC<MenuProps> = ({ currentUser }) => {
     }, [isOpen]);
 
     return (
-        <div className='relative'>
+        <div className='md:relative'>
             <div
                 onClick={toggleMenu}
                 className='shadow-all-side dark:shadow-gray-800 p-2 flex items-center justify-between gap-2 cursor-pointer rounded-3xl'
@@ -64,7 +64,7 @@ const Menu: React.FC<MenuProps> = ({ currentUser }) => {
             {isOpen && (
                 <>
                     <LargeDeviceMenu currentUser={currentUser}/>
-                    {/* <SmallDeviceMenu currentUser={currentUser}/> */}
+                    <SmallDeviceMenu currentUser={currentUser}/>
                 </>
             )}
         </div>

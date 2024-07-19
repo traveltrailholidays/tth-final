@@ -19,7 +19,7 @@ const ExplorePackagesCard = async () => {
     }
 
     return (
-        <Section>
+        <Section className='w-full'>
             <Container className='w-full flex flex-col md:flex-row gap-6 flex-wrap justify-center'>
                 {listings.map((listings: any) => {
                     return (

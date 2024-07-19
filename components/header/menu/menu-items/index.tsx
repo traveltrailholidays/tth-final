@@ -11,7 +11,7 @@ interface LargeMenuItemsProps {
     className?: string;
 }
 
-const LargeMenuItems: React.FC<LargeMenuItemsProps> = ({ icon: Icon, href, title, className }) => {
+const MenuItems: React.FC<LargeMenuItemsProps> = ({ icon: Icon, href, title, className }) => {
   return (
     <Link
         href={href}
@@ -27,4 +27,4 @@ const LargeMenuItems: React.FC<LargeMenuItemsProps> = ({ icon: Icon, href, title
   )
 }
 
-export default LargeMenuItems;
+export default MenuItems;

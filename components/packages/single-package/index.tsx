@@ -84,12 +84,12 @@ const SinglePackage: React.FC<SinglePackageProps> = ({ reservations, listing, cu
                             </h1>
                             <FaqPackageAccordion />
                         </div>
-                        <div className='flex flex-col gap-5'>
+                        {/* <div className='flex flex-col gap-5'>
                             <h1 className='text-3xl font-semibold'>
                                 Trending Packages
                             </h1>
 
-                        </div>
+                        </div> */}
                     </div>
                     <div className='lg:max-w-[350px] w-full flex flex-col gap-8'>
                         <div className='rounded-xl shadow dark:shadow-white/25'>

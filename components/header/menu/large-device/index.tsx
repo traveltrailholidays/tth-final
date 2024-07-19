@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import LargeMenuItems from '../menu-items';
+import MenuItems from '../menu-items';
 import { MdDarkMode } from "react-icons/md";
 import { AiOutlineUser } from "react-icons/ai";
 import { IoLogOutOutline } from "react-icons/io5";
@@ -18,7 +18,7 @@ interface LargeDeviceMenuProps {
 
 const LargeDeviceMenu: React.FC<LargeDeviceMenuProps> = ({ currentUser }) => {
     return (
-        <div className='modal absolute shadow-all-side dark:shadow-gray-800 w-[250px] right-0 rounded-xl top-[45px] md:top-[52px] bg-background py-2 flex flex-col'>
+        <div className='hidden modal absolute shadow-all-side dark:shadow-gray-800 w-[250px] right-0 rounded-xl top-[45px] md:top-[52px] bg-background py-2 md:flex flex-col'>
             {currentUser ? (
                 <>
                     <div
@@ -30,14 +30,14 @@ const LargeDeviceMenu: React.FC<LargeDeviceMenuProps> = ({ currentUser }) => {
                         </h1>
                     </div>
                     {currentUser.isAdmin && (
-                        <LargeMenuItems
+                        <MenuItems
                             href='/create-package'
                             title='Create Package'
                             icon={LuPlus}
                             className='border-b hover:bg-custom-phl dark:hover:bg-custom-phd'
                         />
                     )}
-                    <LargeMenuItems
+                    <MenuItems
                         href='/liked-packages'
                         title='Liked Packages'
                         icon={FaHeart}
@@ -46,7 +46,7 @@ const LargeDeviceMenu: React.FC<LargeDeviceMenuProps> = ({ currentUser }) => {
                 </>
             ) : (
                 <>
-                    <LargeMenuItems
+                    <MenuItems
                         href='/signin'
                         title='Account'
                         icon={AiOutlineUser}

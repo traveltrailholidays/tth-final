@@ -58,7 +58,7 @@ const PackageQuotaion = () => {
                 />
                 <MdLocalPhone size={20} className='absolute top-1/2 -translate-y-1/2 left-3 text-gray-400 ' />
             </div>
-            <div className='relative'>
+            <div className='relative hidden'>
                 <input
                     type="text"
                     placeholder='Package url'
