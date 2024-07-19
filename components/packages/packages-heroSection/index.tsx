@@ -57,7 +57,7 @@ const PackagesHeroSection = () => {
                 />
             </div>
             <Section>
-                <Container className='w-full relative mb-10'>
+                <Container className='w-full relative'>
                     <div className='absolute -top-[67px] bg-custom-sbl dark:bg-custom-sbd shadow dark:shadow-white/25 py-4 px-6 rounded-t-xl'>
                         <span className='font-semibold'>
                             Search for your desired tour package
@@ -81,9 +81,12 @@ const PackagesHeroSection = () => {
                             Search
                         </button>
                     </div>
-                    <h1 className='heading mt-36 sm:mt-24 font-semibold'>
-                        All Packages
+                    <h1 className='heading mt-36 sm:mt-32 w-full font-semibold text-gray-900 dark:text-gray-50 ml-[2px]'>
+                        All packages
                     </h1>
+                    <h2 className='mt-[2px] text-gray-800 dark:text-gray-50'>
+                        Explore all well-known travel spots and their package options
+                    </h2>
                 </Container>
             </Section>
         </ClientOnly>

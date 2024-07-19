@@ -3,6 +3,7 @@
 import React from 'react'
 import { FaArrowRightLong } from 'react-icons/fa6';
 import SearchBar from './serach-bar';
+import Link from 'next/link';
 
 const HomeHeroSection = () => {
   return (
@@ -18,9 +19,12 @@ const HomeHeroSection = () => {
         <h1 className='heroTitle max-w-[580px] font-bold leading-tight text-gray-900 dark:text-gray-50'>
           Discover the most engaging places
         </h1>
-        <span className='bg-custom-clp w-fit px-3 py-2 rounded text-white font-semibold flex gap-5 items-center'>
+        <Link
+          href='/packages' 
+          className='bg-custom-clp w-fit px-3 py-2 rounded text-white font-semibold flex gap-5 items-center'
+        >
           Explore Now <FaArrowRightLong />
-        </span>
+        </Link>
       </div>
       <SearchBar />
     </div>
