@@ -7,16 +7,13 @@ import React, { Suspense } from 'react'
 
 interface AllPackagesProps {
   searchParams: IListingsParams;
-  listings: SafeListing;
 }
 
-const page = ({ searchParams, listings }: AllPackagesProps) => {
+const page = ({ searchParams }: AllPackagesProps) => {
   return (
     <Suspense>
       <ClientOnly>
-        <PackagesHeroSection 
-          listings={listings}
-        />
+        <PackagesHeroSection />
         <AllPackages
           searchParams={searchParams}
         />

@@ -11,10 +11,9 @@ import { IoLocationSharp } from 'react-icons/io5';
 import { SafeListing } from '@/frontend/types';
 
 interface PackagesHeroSectionProps {
-    listings: SafeListing;
 };
 
-const PackagesHeroSection: React.FC<PackagesHeroSectionProps> = ({ listings }) => {
+const PackagesHeroSection: React.FC<PackagesHeroSectionProps> = () => {
 
     const [selectedLocation, setSelectedLocation] = useState<string>('');
 
