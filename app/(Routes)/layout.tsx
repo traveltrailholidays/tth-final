@@ -1,5 +1,6 @@
 import ClientOnly from '@/components/features/ClientOnly';
 import Footer from '@/components/footer';
+import FooterBar from '@/components/footer/footer-bar';
 import Header from '@/components/header';
 import getCurrentUser from '@/frontend/actions/getCurrentUser';
 import React from 'react';
@@ -19,6 +20,7 @@ const RoutesLayout: React.FC<RoutesLayoutProps> = async ({ children }) => {
       </ClientOnly>
       {children}
       <Footer />
+      <FooterBar currentUser={currentUser}/>
     </>
   )
 }

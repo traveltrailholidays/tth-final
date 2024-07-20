@@ -4,14 +4,18 @@ import React from 'react'
 import { FaArrowRightLong } from 'react-icons/fa6';
 import SearchBar from './serach-bar';
 import Link from 'next/link';
+import Image from 'next/image';
 
 const HomeHeroSection = () => {
   return (
     <div className='hidden md:flex flex-row-reverse relative bg-custom-sbl dark:bg-custom-sbd'>
-      <img
+      <Image
+        width={1000}
+        height={1000}
         src="/homeHeroBg.jpg"
-        alt=""
+        alt="heroSection"
         className='w-[65%] 2xl:w-1/2 h-[450px] lg:h-[600px] object-cover select-none'
+        quality={100}
       />
       <div className='w-[65%] 2xl:w-1/2 h-[600px] object-cover select-none bg-black absolute opacity-50 dark:block hidden'></div>
       <div className='w-[65%] 2xl:w-1/2 h-[600px] object-cover select-none bg-white/50 absolute opacity-10 dark:hidden'></div>
@@ -21,7 +25,7 @@ const HomeHeroSection = () => {
         </h1>
         <Link
           href='/packages' 
-          className='bg-custom-clp w-fit px-3 py-2 rounded text-white font-semibold flex gap-5 items-center'
+          className='bg-custom-clp hover:bg-custom-clp/80 w-fit px-3 py-2 rounded text-white font-semibold flex gap-5 items-center'
         >
           Explore Now <FaArrowRightLong />
         </Link>

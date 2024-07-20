@@ -9,6 +9,7 @@ import ExplorePackagesCard from '@/components/home/explore-packages/explore-pack
 import getCurrentUser from '@/frontend/actions/getCurrentUser';
 import React from 'react';
 import { Suspense } from 'react';
+import FooterBar from '@/components/footer/footer-bar';
 
 const page = async () => {
 
@@ -24,6 +25,7 @@ const page = async () => {
         <ExplorePackagesCard />
         <HomeSelectCategory />
         <Footer />
+        <FooterBar currentUser={currentUser}/>
       </ClientOnly>
     </Suspense>
   )

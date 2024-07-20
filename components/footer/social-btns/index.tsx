@@ -26,7 +26,7 @@ const SocialBtns: React.FC<SocialBtnsProps> = ({ className }) => {
                 rel="noopener noreferrer"
                 className="bg-custom-sbl dark:bg-custom-shd hover:text-white rounded-full w-10 h-10 items-center justify-center flex hover:bg-[#FF5956] dark:hover:bg-[#FF5956]"
             >
-                <FaInstagram size={20}/>
+                <TiSocialLinkedin size={28}/>
             </Link>
             <Link
                 href="https://twitter.com/TTrailHolidays"
@@ -34,7 +34,7 @@ const SocialBtns: React.FC<SocialBtnsProps> = ({ className }) => {
                 rel="noopener noreferrer"
                 className="bg-custom-sbl dark:bg-custom-shd hover:text-white rounded-full w-10 h-10 items-center justify-center flex hover:bg-[#FF5956] dark:hover:bg-[#FF5956]"
             >
-                <TiSocialLinkedin size={28}/>
+                <FaXTwitter size={20}/>
             </Link>
             <Link
                 href="https://www.instagram.com/traveltrailholidays/"
@@ -42,7 +42,7 @@ const SocialBtns: React.FC<SocialBtnsProps> = ({ className }) => {
                 rel="noopener noreferrer"
                 className="bg-custom-sbl dark:bg-custom-shd hover:text-white rounded-full w-10 h-10 items-center justify-center flex hover:bg-[#FF5956] dark:hover:bg-[#FF5956]"
             >
-                <FaXTwitter size={20}/>
+                <FaInstagram size={20}/>
             </Link>
         </div>
     )

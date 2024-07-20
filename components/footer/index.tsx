@@ -14,7 +14,7 @@ import GetInTouchFooter from './get-in-touch';
 const Footer = () => {
     return (
         <Section className='border-t dark:border-t-2 dark:border-gray-800'>
-            <Container className='w-full pt-6'>
+            <Container className='w-full pt-6 mb-10 md:mb-0'>
                 <div className='w-full flex flex-col md:flex-row items-center md:justify-between'>
                     <Logo className='mb-6' />
                     <SocialBtns className='mb-6' />

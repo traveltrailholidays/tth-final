@@ -41,16 +41,35 @@ const SmallDeviceMenu: React.FC<SmallDeviceMenuProps> = ({ currentUser }) => {
             <IoClose size={20} />
           </div>
         </div>
-        {currentUser ? (
+        <div>
+          <MenuItems
+            href='/'
+            title='Home'
+            icon={AiOutlineUser}
+            className='border-b hover:bg-custom-phl dark:hover:bg-custom-phd'
+          />
+          <MenuItems
+            href='/packages'
+            title='Packages'
+            icon={AiOutlineUser}
+            className='border-b hover:bg-custom-phl dark:hover:bg-custom-phd'
+          />
+          <MenuItems
+            href='/about-us'
+            title='About Us'
+            icon={AiOutlineUser}
+            className='border-b hover:bg-custom-phl dark:hover:bg-custom-phd'
+          />
+          <MenuItems
+            href='/payments'
+            title='Payments'
+            icon={AiOutlineUser}
+            className='border-b hover:bg-custom-phl dark:hover:bg-custom-phd'
+          />
+        </div>
+        {/* {currentUser ? (
           <>
-            <div
-              className='border-b flex items-center gap-3 px-3 h-16 hover:bg-custom-phl dark:hover:bg-custom-phd cursor-pointer'
-            >
-              <Avatar src={currentUser.image} className='w-9 h-9' />
-              <h1 className='font-medium'>
-                {currentUser.name}
-              </h1>
-            </div>
+            
             {currentUser.isAdmin && (
               <MenuItems
                 href='/create-package'
@@ -68,15 +87,10 @@ const SmallDeviceMenu: React.FC<SmallDeviceMenuProps> = ({ currentUser }) => {
           </>
         ) : (
           <>
-            <MenuItems
-              href='/signin'
-              title='Account'
-              icon={AiOutlineUser}
-              className='border-b hover:bg-custom-phl dark:hover:bg-custom-phd'
-            />
+
           </>
-        )}
-        <div className='flex justify-between px-3 h-16'>
+        )} */}
+        <div className='flex justify-between px-3 h-16 border-b'>
           <div className=' flex items-center gap-3'>
             <div className='bg-custom-sbl dark:bg-custom-shd p-2 rounded-full'>
               <MdDarkMode size={20} />
@@ -88,19 +102,13 @@ const SmallDeviceMenu: React.FC<SmallDeviceMenuProps> = ({ currentUser }) => {
           <ThemeSwitcher />
         </div>
         {currentUser && (
-          <>
-            <div
-              onClick={() => signOut()}
-              className='border-t flex items-center gap-3 px-3 h-16 hover:bg-custom-phl dark:hover:bg-custom-phd cursor-pointer'
-            >
-              <div className='bg-custom-sbl dark:bg-custom-shd p-2 rounded-full'>
-                <IoLogOutOutline size={20} />
-              </div>
-              <h1 className='font-medium'>
-                Logout
-              </h1>
-            </div>
-          </>
+          <MenuItems
+            href='/'
+            onClick={() => signOut()}
+            title='Logout'
+            icon={IoLogOutOutline}
+            className='border-b hover:bg-custom-phl dark:hover:bg-custom-phd'
+          />
         )}
       </div>
     </div>
