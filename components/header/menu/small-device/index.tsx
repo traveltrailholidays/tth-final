@@ -13,12 +13,17 @@ import Avatar from '@/components/features/Avatar';
 import { MdDarkMode } from 'react-icons/md';
 import ThemeSwitcher from '@/components/theme/themeSwitcher';
 import { signOut } from 'next-auth/react';
+import { GoHome } from 'react-icons/go';
+import { RiPagesLine } from 'react-icons/ri';
+import { BiRupee } from "react-icons/bi";
+import { BsInfoLg } from "react-icons/bs";
 
 interface SmallDeviceMenuProps {
   currentUser: safeUser | null;
+  onClick?: () => void;
 }
 
-const SmallDeviceMenu: React.FC<SmallDeviceMenuProps> = ({ currentUser }) => {
+const SmallDeviceMenu: React.FC<SmallDeviceMenuProps> = ({ currentUser, onClick }) => {
   return (
     <div className='modal flex absolute w-screen h-screen left-0 top-0 bg-black/40 md:hidden'>
       <div className='w-3/4 sm:w-[450px] bg-background border-r-[0.25rem] border-custom-clp'>
@@ -44,26 +49,30 @@ const SmallDeviceMenu: React.FC<SmallDeviceMenuProps> = ({ currentUser }) => {
         <div>
           <MenuItems
             href='/'
+            onClick={onClick}
             title='Home'
-            icon={AiOutlineUser}
+            icon={GoHome}
             className='border-b hover:bg-custom-phl dark:hover:bg-custom-phd'
           />
           <MenuItems
             href='/packages'
+            onClick={onClick}
             title='Packages'
-            icon={AiOutlineUser}
+            icon={RiPagesLine}
             className='border-b hover:bg-custom-phl dark:hover:bg-custom-phd'
           />
           <MenuItems
             href='/about-us'
+            onClick={onClick}
             title='About Us'
-            icon={AiOutlineUser}
+            icon={BsInfoLg}
             className='border-b hover:bg-custom-phl dark:hover:bg-custom-phd'
           />
           <MenuItems
             href='/payments'
+            onClick={onClick}
             title='Payments'
-            icon={AiOutlineUser}
+            icon={BiRupee}
             className='border-b hover:bg-custom-phl dark:hover:bg-custom-phd'
           />
         </div>

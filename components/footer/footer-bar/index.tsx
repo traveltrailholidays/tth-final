@@ -14,34 +14,50 @@ interface FooterBarProps {
 const FooterBar: React.FC<FooterBarProps> = ({ currentUser }) => {
 
   return (
-    <Section className='md:hidden shadow-all-side dark:shadow-gray-800 fixed w-full bottom-0 bg-background'>
+    <Section className='md:hidden border-t dark:border-gray-800 fixed w-full bottom-0 bg-background'>
       <Container className='flex w-full justify-around items-center'>
         <Link
           href='/'
+          className='flex flex-col items-center gap-[2px]'
         >
           <GoHome size={26} />
+          <span className='text-xs'>
+            Home
+          </span>
         </Link>
         {currentUser ? (
           <>
             <Link
               href="/liked-packages"
+              className='flex flex-col items-center gap-[2px]'
             >
               <FaHeart size={24} />
+              <span className='text-xs'>
+                Home
+              </span>
             </Link>
           </>
         ) : (
           <>
             <Link
               href="/signin"
+              className='flex flex-col items-center gap-[2px]'
             >
               <FaHeart size={24} />
+              <span className='text-xs'>
+                Liked
+              </span>
             </Link>
           </>
         )}
         <Link
           href="/signin"
+          className='flex flex-col items-center gap-[2px]'
         >
           <Avatar src={currentUser?.image} className='w-7 h-7' />
+          <span className='text-xs'>
+            Account
+          </span>
         </Link>
       </Container>
     </Section>

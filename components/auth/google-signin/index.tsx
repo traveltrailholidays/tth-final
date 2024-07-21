@@ -35,8 +35,6 @@ const GoogleSignIn: React.FC<GoogleSignInProps> = ({currentUser}) => {
             } else {
                 console.error('Sign in error:', result?.error ?? 'Unknown error');
             }
-
-            toast.success('Logged in');
         } catch (error) {
             console.error('Sign in error:', error);
         }

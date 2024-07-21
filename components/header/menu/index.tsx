@@ -17,6 +17,9 @@ const Menu: React.FC<MenuProps> = ({ currentUser }) => {
     const toggleMenu = useCallback(() => {
         setIsOpen((value) => !value);
     }, [setIsOpen]);
+    const handleClose = useCallback(() => {
+        setIsOpen(false);
+    }, [setIsOpen]);
     useEffect(() => {
         const handleEscape = (event: KeyboardEvent) => {
             if (event.key === "Escape") {
@@ -64,7 +67,7 @@ const Menu: React.FC<MenuProps> = ({ currentUser }) => {
             {isOpen && (
                 <>
                     <LargeDeviceMenu currentUser={currentUser}/>
-                    <SmallDeviceMenu currentUser={currentUser}/>
+                    <SmallDeviceMenu currentUser={currentUser} onClick={handleClose}/>
                 </>
             )}
         </div>

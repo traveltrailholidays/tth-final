@@ -29,7 +29,7 @@ const PaymentsSection = () => {
                     </span>
                 </div>
             </div>
-            <Container className={`md:px-5 w-[99%] mt-24`}>
+            <Container className={`px-3 md:px-5 w-[99%] mt-24`}>
                 <div className={`flex justify-between flex-col md:flex-row gap-10`}>
                     <div className={`w-full`}>
                         <div>
@@ -43,7 +43,7 @@ const PaymentsSection = () => {
                     </div>
 
                     <div
-                        className={`rounded-md bg-custom-shl dark:bg-custom-phd p-10 max-w-[450px] w-full h-[300px]`}
+                        className={`rounded-md bg-custom-shl dark:bg-custom-phd p-10 max-w-[450px] w-full max-h-[400px]`}
                     >
                         <div>
                             <div className={`text-custom-clp font-semibold text-xl`}>
