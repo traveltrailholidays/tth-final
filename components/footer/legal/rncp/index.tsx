@@ -34,6 +34,12 @@ const Rncp = () => {
                         In Case passenger is no show at the time of departure, 100% of tour cost shall be detected. Even If Trip is cancelled on the same day of date booking then 10%+GST of the total trip cost will be deducted /applicable as cancellation Charges.
                     </p>
                 </div>
+                <div className='flex flex-col gap-5 mt-10'>
+                    <h1 className='text-3xl font-[600]'>Refund Policy:</h1>
+                    <p className='mt-5'>
+                        If you are elegible for refund, then the full amount will be credited to your account within 7 to 14 working days.
+                    </p>
+                </div>
             </Container>
         </Section>
     )
