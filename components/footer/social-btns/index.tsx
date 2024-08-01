@@ -13,7 +13,7 @@ const SocialBtns: React.FC<SocialBtnsProps> = ({ className }) => {
     return (
         <div className={`${className} flex gap-5 flex-wrap`}>
             <Link
-                href="https://www.facebook.com/profile.php?id=61558911416361"
+                href="https://www.facebook.com/profile.php?id=61563380759807"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="bg-custom-sbl dark:bg-custom-shd hover:text-white rounded-full w-10 h-10 items-center justify-center flex hover:bg-[#FF5956] dark:hover:bg-[#FF5956]"

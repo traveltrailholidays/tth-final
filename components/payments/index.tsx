@@ -4,6 +4,7 @@ import Section from '../features/Section';
 import Container from '../features/Container';
 import PaymentsAccordion from './payment-accordion';
 import { FaPhoneAlt } from 'react-icons/fa';
+import PaymentGateway from './payment-gateway';
 
 const PaymentsSection = () => {
     return (
@@ -37,8 +38,9 @@ const PaymentsSection = () => {
                                 Select the desired payment option
                             </span>
                         </div>
-                        <div className="mt-5">
+                        <div className="mt-5 flex flex-col gap-5">
                             <PaymentsAccordion />
+                            <PaymentGateway amount={100} />
                         </div>
                     </div>
 
