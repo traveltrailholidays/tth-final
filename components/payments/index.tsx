@@ -5,6 +5,7 @@ import Container from '../features/Container';
 import PaymentsAccordion from './payment-accordion';
 import { FaPhoneAlt } from 'react-icons/fa';
 import PaymentGateway from './payment-gateway';
+import PaymentUpi from './payment-upi';
 
 const PaymentsSection = () => {
     return (
@@ -40,7 +41,8 @@ const PaymentsSection = () => {
                         </div>
                         <div className="mt-5 flex flex-col gap-5">
                             <PaymentsAccordion />
-                            <PaymentGateway amount={100} />
+                            <PaymentUpi />
+                            <PaymentGateway />
                         </div>
                     </div>
 

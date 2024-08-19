@@ -118,7 +118,7 @@ const PaymentForm = () => {
                         placeholder='Payment Details'
                         required
                     />
-                    <button type="submit" className='py-3 px-5 w-fit bg-custom-clp rounded font-semibold'>
+                    <button type="submit" className='py-3 px-5 w-fit bg-custom-clp rounded font-semibold text-white hover:bg-custom-clp/90'>
                         Pay Now
                     </button>
                 </form>

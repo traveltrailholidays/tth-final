@@ -1,12 +1,10 @@
 'use client';
 
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import PaymentForm from "./payment-form";
 
 
-export default function PaymentGateway({ amount }: any) {
+export default function PaymentGateway() {
 
     
     return (
