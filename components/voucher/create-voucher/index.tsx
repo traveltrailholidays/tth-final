@@ -1,83 +1,84 @@
 "use client";
 
-import Container from "@/components/features/Container";
-import Section from "@/components/features/Section";
-import React, { useState } from "react";
-import { FieldValues, useForm } from "react-hook-form";
-import { categories } from "@/frontend/data/categories";
-import CategoryInput from "@/components/features/Inputs/CategoryInput";
-import axios from "axios";
-import toast from "react-hot-toast";
+import React from "react";
+import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
-import ImageUpload from "@/components/features/Inputs/ImageUpload";
+import Section from "@/components/features/Section";
+import Container from "@/components/features/Container";
+
+interface VoucherFormValues {
+  clientName: string;
+  bookingId: string;
+  hotelNo: number;
+  adultNo: number;
+  childrenNo: number;
+  nights: number;
+  itinary: Array<{
+    hotelName: string;
+    nights: number;
+    fromDate: string;
+    toDate: string;
+    description: string;
+  }>;
+  cabDetails: string;
+}
 
 const CreateVoucher = () => {
   const router = useRouter();
-  const [isLoading, setIsLoading] = useState(false);
-
   const {
     register,
     handleSubmit,
     setValue,
     watch,
     formState: { errors },
-    reset,
-  } = useForm<FieldValues>({
+  } = useForm<VoucherFormValues>({
     defaultValues: {
-      category: "",
-      location: "",
-      title: "",
-      description: "",
-      imageSrc: "",
-      price: 1,
-      days: 1,
-      nights: 0,
-      rating: 1,
-      discount: 0,
-      itinary: Array(1).fill(""), // Start with one empty string for the itinary
+      clientName: "",
+      bookingId: "",
+      hotelNo: 1,
+      adultNo: 1,
+      childrenNo: 0,
+      itinary: [
+        { hotelName: "", nights: 1, fromDate: "", toDate: "", description: "" },
+      ],
+      cabDetails: "",
     },
   });
 
-  const imageSrc = watch("imageSrc");
+  const onSubmit = (data: VoucherFormValues) => {
+    // Serialize form data to a query string format
+    const queryParams = new URLSearchParams({
+      clientName: data.clientName,
+      bookingId: data.bookingId,
+      hotelNo: data.hotelNo.toString(),
+      adultNo: data.adultNo.toString(),
+      childrenNo: data.childrenNo.toString(),
+      itinary: JSON.stringify(data.itinary),
+      cabDetails: data.cabDetails,
+    }).toString();
 
-  const onSubmit = (data: any) => {
-    console.log(data);
-    axios
-      .post("/api/packages", data)
-      .then(() => {
-        toast.success("Package created");
-        router.refresh();
-        reset();
-      })
-      .catch(() => {
-        toast.error("Something went wrong");
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
+    // Redirect to the view voucher page with query parameters
+    router.push(`/voucher/view-voucher?${queryParams}`);
   };
 
-  const handleDaysChange = (e: any) => {
-    const numDays = parseInt(e.target.value) || 1; // Ensure we have at least 1 day
-    const numNights = numDays - 1; // Calculate nights as one less than days
+  const handleHotelNoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const numHotels = parseInt(e.target.value) || 1;
+    const currentItinary = watch("itinary");
+    const newItinary = Array(numHotels)
+      .fill(null)
+      .map(
+        (_, index) =>
+          currentItinary[index] || {
+            hotelName: "",
+            nights: 1,
+            fromDate: "",
+            toDate: "",
+            description: "",
+          }
+      );
 
-    const currentitinary = watch("itinary");
-    const newitinary = Array(numDays)
-      .fill("")
-      .map((_, index) => currentitinary[index] || "");
-
-    setValue("days", numDays); // Update days value
-    setValue("nights", numNights); // Update nights value
-    setValue("itinary", newitinary); // Update itinary array
-  };
-
-  const category = watch("category");
-  const setCustomValue = (id: string, value: any) => {
-    setValue(id, value, {
-      shouldValidate: true,
-      shouldDirty: true,
-      shouldTouch: true,
-    });
+    setValue("hotelNo", numHotels);
+    setValue("itinary", newItinary);
   };
 
   return (
@@ -87,40 +88,48 @@ const CreateVoucher = () => {
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-8">
           <div className="flex flex-col gap-3">
             <input
-              {...register("title", { required: true })}
+              {...register("clientName", {
+                required: "Client's name is required",
+              })}
               placeholder="Client's name"
-              className="border-neutral-200 dark:border-gray-800 border-2 px-2 py-3 rounded "
+              className="border-neutral-200 dark:border-gray-800 border-2 px-2 py-3 rounded"
             />
-            {errors.title && <span>Title is required</span>}
+            {errors.clientName && (
+              <span className="text-custom-clp">
+                {errors.clientName.message}
+              </span>
+            )}
           </div>
           <div className="flex flex-col gap-3">
             <input
-              {...register("title", { required: true })}
+              {...register("bookingId", { required: "Booking ID is required" })}
               placeholder="Booking ID"
-              className="border-neutral-200 dark:border-gray-800 border-2 px-2 py-3 rounded "
+              className="border-neutral-200 dark:border-gray-800 border-2 px-2 py-3 rounded"
             />
-            {errors.title && <span>Title is required</span>}
+            {errors.bookingId && (
+              <span className="text-custom-clp">
+                {errors.bookingId.message}
+              </span>
+            )}
           </div>
-
           <div className="flex flex-col gap-3 relative">
             <input
               type="number"
-              {...register("days", { valueAsNumber: true })}
-              onChange={handleDaysChange}
+              {...register("hotelNo", { valueAsNumber: true, min: 1 })}
+              onChange={handleHotelNoChange}
               placeholder="Hotel's No"
-              className="border-neutral-200 dark:border-gray-800 border-2 pl-[110px] pr-2 py-3 rounded "
+              className="border-neutral-200 dark:border-gray-800 border-2 pl-[110px] pr-2 py-3 rounded"
             />
             <div className="absolute top-1/2 -translate-y-1/2 left-3">
-              Hotel&apos;s No :
+              Hotel's No :
             </div>
           </div>
-
           <div className="flex flex-col gap-3 relative">
             <input
               type="number"
-              {...register("rating", { valueAsNumber: true })}
+              {...register("adultNo", { valueAsNumber: true, min: 1 })}
               placeholder="Adults"
-              className="border-neutral-200 dark:border-gray-800 border-2 pl-20 pr-2 py-3 rounded "
+              className="border-neutral-200 dark:border-gray-800 border-2 pl-20 pr-2 py-3 rounded"
             />
             <div className="absolute top-1/2 -translate-y-1/2 left-3">
               Adults :
@@ -129,59 +138,111 @@ const CreateVoucher = () => {
           <div className="flex flex-col gap-3 relative">
             <input
               type="number"
-              {...register("discount", { valueAsNumber: true })}
-              placeholder="Discount"
-              className="border-neutral-200 dark:border-gray-800 border-2 pl-[100px] pr-2 py-3 rounded "
+              {...register("childrenNo", { valueAsNumber: true, min: 0 })}
+              placeholder="Children"
+              className="border-neutral-200 dark:border-gray-800 border-2 pl-[100px] pr-2 py-3 rounded"
             />
             <div className="absolute top-1/2 -translate-y-1/2 left-3">
               Children :
             </div>
           </div>
           <ul className="flex flex-col gap-8">
-            {watch("itinary", []).map((item: any, index: any) => (
+            {watch("itinary", []).map((item, index) => (
               <li key={index} className="flex flex-col gap-2">
                 <div className="flex flex-col gap-3">
                   <input
-                    {...register("title", { required: true })}
+                    {...register(`itinary.${index}.hotelName` as const, {
+                      required: "Hotel name is required",
+                    })}
                     placeholder="Hotel's name"
-                    className="border-neutral-200 dark:border-gray-800 border-2 px-2 py-3 rounded "
+                    className="border-neutral-200 dark:border-gray-800 border-2 px-2 py-3 rounded"
                   />
-                  {errors.title && <span>Title is required</span>}
+                  {errors.itinary?.[index]?.hotelName && (
+                    <span className="text-custom-clp">
+                      {errors.itinary[index]?.hotelName?.message}
+                    </span>
+                  )}
                 </div>
                 <div className="flex flex-col gap-3 relative">
                   <input
                     type="number"
-                    {...register("rating", { valueAsNumber: true })}
-                    placeholder="Adults"
-                    className="border-neutral-200 dark:border-gray-800 border-2 pl-20 pr-2 py-3 rounded "
+                    {...register(`itinary.${index}.nights` as const, {
+                      valueAsNumber: true,
+                      min: 1,
+                    })}
+                    placeholder="Nights"
+                    className="border-neutral-200 dark:border-gray-800 border-2 pl-20 pr-2 py-3 rounded"
                   />
                   <div className="absolute top-1/2 -translate-y-1/2 left-3">
                     Nights :
                   </div>
                 </div>
-                <textarea
-                  {...register(`itinary.${index}`, { required: true })}
-                  defaultValue={item}
-                  placeholder={`Description`}
-                  className="border-neutral-200 dark:border-gray-800 border-2 px-2 py-3 rounded w-full"
-                />
-                {errors.itinary && <span>Day {index + 1} is required</span>}
+                <div className="flex flex-col gap-3">
+                  <input
+                    type="date"
+                    {...register(`itinary.${index}.fromDate` as const, {
+                      required: "From Date is required",
+                    })}
+                    placeholder="From Date"
+                    className="border-neutral-200 dark:border-gray-800 border-2 px-2 py-3 rounded"
+                  />
+                  {errors.itinary?.[index]?.fromDate && (
+                    <span className="text-custom-clp">
+                      {errors.itinary[index]?.fromDate?.message}
+                    </span>
+                  )}
+                </div>
+                <div className="flex flex-col gap-3">
+                  <input
+                    type="date"
+                    {...register(`itinary.${index}.toDate` as const, {
+                      required: "To Date is required",
+                    })}
+                    placeholder="To Date"
+                    className="border-neutral-200 dark:border-gray-800 border-2 px-2 py-3 rounded"
+                  />
+                  {errors.itinary?.[index]?.toDate && (
+                    <span className="text-custom-clp">
+                      {errors.itinary[index]?.toDate?.message}
+                    </span>
+                  )}
+                </div>
+                <div className="flex flex-col gap-3">
+                  <textarea
+                    {...register(`itinary.${index}.description` as const, {
+                      required: "Description is required",
+                    })}
+                    placeholder="Description"
+                    className="border-neutral-200 dark:border-gray-800 border-2 px-2 py-3 rounded"
+                  />
+                  {errors.itinary?.[index]?.description && (
+                    <span className="text-custom-clp">
+                      {errors.itinary[index]?.description?.message}
+                    </span>
+                  )}
+                </div>
               </li>
             ))}
           </ul>
           <div className="flex flex-col gap-3">
-            <input
-              {...register("title", { required: true })}
-              placeholder="Cab's Deatils"
-              className="border-neutral-200 dark:border-gray-800 border-2 px-2 py-3 rounded "
+            <textarea
+              {...register("cabDetails", {
+                required: "Cab details are required",
+              })}
+              placeholder="Cab Details"
+              className="border-neutral-200 dark:border-gray-800 border-2 px-2 py-3 rounded"
             />
-            {errors.title && <span>Title is required</span>}
+            {errors.cabDetails && (
+              <span className="text-custom-clp">
+                {errors.cabDetails.message}
+              </span>
+            )}
           </div>
           <button
             type="submit"
-            className="py-2 bg-custom-clp rounded font-medium text-white hover:bg-custom-clp/80"
+            className="bg-blue-500 text-white px-4 py-2 rounded"
           >
-            Generate Pdf
+            Generate PDF
           </button>
         </form>
       </Container>

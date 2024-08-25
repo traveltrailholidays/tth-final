@@ -47,7 +47,7 @@ const PaymentsSection = () => {
                     </div>
 
                     <div
-                        className={`rounded-md bg-custom-shl dark:bg-custom-phd p-10 max-w-[450px] w-full max-h-[400px]`}
+                        className={`rounded-md bg-custom-shl dark:bg-custom-phd p-10 max-w-[450px] w-full h-auto md:h-[310px]`}
                     >
                         <div>
                             <div className={`text-custom-clp font-semibold text-xl`}>
@@ -63,7 +63,7 @@ const PaymentsSection = () => {
                                 </div>
                             </div>
                             <div className={`text-[15px] mt-5`}>
-                                <div className={`flex items-center gap-5`}>
+                                <div className={`flex items-center gap-5 flex-wrap`}>
                                     <div
                                         className={`bg-custom-clp rounded-full w-16 h-16 flex justify-center items-center text-custom-txd`}
                                     >

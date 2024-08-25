@@ -89,6 +89,7 @@ const UpiDetails = () => {
                         UPI ID: 9625992025@upi
                     </span>
                 </div>
+                
             </div>
         </div>
     );
