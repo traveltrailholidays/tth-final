@@ -89,9 +89,9 @@ const CreateVoucher = () => {
           <div className="flex flex-col gap-3">
             <input
               {...register("clientName", {
-                required: "Client's name is required",
+                required: "Client&apos;s name is required",
               })}
-              placeholder="Client's name"
+              placeholder="Client&apos;s name"
               className="border-neutral-200 dark:border-gray-800 border-2 px-2 py-3 rounded"
             />
             {errors.clientName && (
@@ -117,11 +117,11 @@ const CreateVoucher = () => {
               type="number"
               {...register("hotelNo", { valueAsNumber: true, min: 1 })}
               onChange={handleHotelNoChange}
-              placeholder="Hotel's No"
+              placeholder="Hotel&apos;s No"
               className="border-neutral-200 dark:border-gray-800 border-2 pl-[110px] pr-2 py-3 rounded"
             />
             <div className="absolute top-1/2 -translate-y-1/2 left-3">
-              Hotel's No :
+              Hotel&apos;s No :
             </div>
           </div>
           <div className="flex flex-col gap-3 relative">
@@ -154,7 +154,7 @@ const CreateVoucher = () => {
                     {...register(`itinary.${index}.hotelName` as const, {
                       required: "Hotel name is required",
                     })}
-                    placeholder="Hotel's name"
+                    placeholder="Hotel&apos;s name"
                     className="border-neutral-200 dark:border-gray-800 border-2 px-2 py-3 rounded"
                   />
                   {errors.itinary?.[index]?.hotelName && (
