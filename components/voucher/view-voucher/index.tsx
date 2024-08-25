@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { FaHotel } from "react-icons/fa6";
 import { PiCarProfileBold } from "react-icons/pi";
@@ -92,14 +91,14 @@ const ViewVoucher = () => {
           <div className="mt-7">
             <div className="flex gap-10 items-center p-5">
               <PiCarProfileBold size={100} color="#FACC15" />
-              <h1 className="text-2xl font-bold">Ertiga/Innova</h1>
+              <h1 className="text-2xl font-bold">{voucherData.cabDetails}</h1>
             </div>
             <div className="h-[1px] bg-gray-400 w-full mt-3"></div>
           </div>
         </div>
         <div className="px-5 py-7">
           <h1 className="font-bold text-3xl">Important Information</h1>
-          <ul className="list-disc px-10 text-xl font-medium">
+          <ul className="list-disc px-10 text-[18px] font-medium">
             <li className="mt-3">
               Each guest must carry a valid ID proof (Aadhaar Card, Driving
               License or Passport) PAN card will not be accepted.
@@ -116,7 +115,7 @@ const ViewVoucher = () => {
           </ul>
         </div>
         {showPrintButton && (
-          <div onClick={handlePrint} className="my-20 cursor-pointer bg-blue-500 text-white p-2 text-center rounded">
+          <div onClick={handlePrint} className="py-2 bg-custom-clp rounded font-medium text-white hover:bg-custom-clp/80 text-center my-20 cursor-pointer">
             Print
           </div>
         )}

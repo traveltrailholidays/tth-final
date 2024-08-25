@@ -25,6 +25,18 @@ interface VoucherFormValues {
 
 const CreateVoucher = () => {
   const router = useRouter();
+
+  function generateBookingId(length: number = 12): string {
+    const characters =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    let result = "";
+    const charactersLength = characters.length;
+    for (let i = 0; i < length; i++) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
+  }
+
   const {
     register,
     handleSubmit,
@@ -46,10 +58,13 @@ const CreateVoucher = () => {
   });
 
   const onSubmit = (data: VoucherFormValues) => {
+    // Generate a unique booking ID
+    const bookingId = generateBookingId();
+
     // Serialize form data to a query string format
     const queryParams = new URLSearchParams({
       clientName: data.clientName,
-      bookingId: data.bookingId,
+      bookingId: bookingId, // Use the generated booking ID
       hotelNo: data.hotelNo.toString(),
       adultNo: data.adultNo.toString(),
       childrenNo: data.childrenNo.toString(),
@@ -57,8 +72,11 @@ const CreateVoucher = () => {
       cabDetails: data.cabDetails,
     }).toString();
 
-    // Redirect to the view voucher page with query parameters
-    router.push(`/voucher/view-voucher?${queryParams}`);
+    // Construct the URL for the view voucher page
+    const url = `/voucher/view-voucher?${queryParams}`;
+
+    // Open the URL in a new tab
+    window.open(url, '_blank');
   };
 
   const handleHotelNoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -91,7 +109,7 @@ const CreateVoucher = () => {
               {...register("clientName", {
                 required: "Client&apos;s name is required",
               })}
-              placeholder="Client&apos;s name"
+              placeholder="Client's name"
               className="border-neutral-200 dark:border-gray-800 border-2 px-2 py-3 rounded"
             />
             {errors.clientName && (
@@ -100,24 +118,12 @@ const CreateVoucher = () => {
               </span>
             )}
           </div>
-          <div className="flex flex-col gap-3">
-            <input
-              {...register("bookingId", { required: "Booking ID is required" })}
-              placeholder="Booking ID"
-              className="border-neutral-200 dark:border-gray-800 border-2 px-2 py-3 rounded"
-            />
-            {errors.bookingId && (
-              <span className="text-custom-clp">
-                {errors.bookingId.message}
-              </span>
-            )}
-          </div>
           <div className="flex flex-col gap-3 relative">
             <input
               type="number"
               {...register("hotelNo", { valueAsNumber: true, min: 1 })}
               onChange={handleHotelNoChange}
-              placeholder="Hotel&apos;s No"
+              placeholder="Hotel's No"
               className="border-neutral-200 dark:border-gray-800 border-2 pl-[110px] pr-2 py-3 rounded"
             />
             <div className="absolute top-1/2 -translate-y-1/2 left-3">
@@ -154,7 +160,7 @@ const CreateVoucher = () => {
                     {...register(`itinary.${index}.hotelName` as const, {
                       required: "Hotel name is required",
                     })}
-                    placeholder="Hotel&apos;s name"
+                    placeholder="Hotel's name"
                     className="border-neutral-200 dark:border-gray-800 border-2 px-2 py-3 rounded"
                   />
                   {errors.itinary?.[index]?.hotelName && (
@@ -240,7 +246,7 @@ const CreateVoucher = () => {
           </div>
           <button
             type="submit"
-            className="bg-blue-500 text-white px-4 py-2 rounded"
+            className="py-2 bg-custom-clp rounded font-medium text-white hover:bg-custom-clp/80"
           >
             Generate PDF
           </button>
