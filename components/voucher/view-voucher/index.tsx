@@ -38,7 +38,7 @@ const ViewVoucher = () => {
 
   return (
     <div className="w-full flex justify-center items-center">
-      <div className={`w-[894px]`}>
+      <div className={`max-w-[894px]`}>
         <div className="bg-teal-300 px-5 py-7">
           <header className="flex justify-center items-center gap-2">
             <Image
@@ -48,9 +48,9 @@ const ViewVoucher = () => {
               height={42}
               quality={100}
             />
-            <span className="text-2xl font-semibold">Travel Trail Holidays</span>
+            <span className="text-2xl font-semibold dark:text-black">Travel Trail Holidays</span>
           </header>
-          <div className="text-[18px] mt-4">
+          <div className="text-[18px] mt-4 text-black">
             <div className="flex gap-2 font-medium">
               Dear
               <span className="font-semibold">{voucherData.clientName},</span>
@@ -84,7 +84,7 @@ const ViewVoucher = () => {
                     <span>{formattedDate(item.fromDate)}</span>
                     <span>{formattedDate(item.toDate)}</span>
                   </div>
-                  <p className="text-xl w-[600px]">{item.description}</p>
+                  <p className="text-xl min-w-[200px] max-w-[600px]">{item.description}</p>
                 </div>
               </div>
               <div className="h-[1px] bg-gray-400 w-full mt-3"></div>
