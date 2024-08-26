@@ -113,7 +113,7 @@ const ViewVoucher = () => {
               Early checkin and late checkout is subject to availability and as
               per hotel policy.
             </li>
-            <li>Travel Trail Holidays Support: +91-9625992025</li>
+            <li>Travel Trail Holidays Support: +91 9953276022, +91 7838088761</li>
           </ul>
         </div>
         {showPrintButton && (
