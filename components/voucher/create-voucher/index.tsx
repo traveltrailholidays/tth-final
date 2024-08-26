@@ -317,7 +317,7 @@ const CreateVoucher = () => {
             ))}
           </ul>
           <div className="flex flex-col gap-3">
-            <textarea
+            <input
               {...register("cabDetails", {
                 required: "Cab details are required",
               })}
