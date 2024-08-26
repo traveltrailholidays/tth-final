@@ -4,19 +4,27 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { FaHotel } from "react-icons/fa6";
 import { PiCarProfileBold } from "react-icons/pi";
-import { format, parseISO } from 'date-fns';
+import { format, parseISO } from "date-fns";
+
+import { Noto_Sans } from "next/font/google";
+
+const notoSans = Noto_Sans({
+  subsets: ["latin"],
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+});
 
 const ViewVoucher = () => {
   const [voucherData, setVoucherData] = useState<any>(null);
   const [showPrintButton, setShowPrintButton] = useState(true);
 
-  const formattedDate = (dateString:any) => format(parseISO(dateString), 'dd-MM-yyyy');
+  const formattedDate = (dateString: any) =>
+    format(parseISO(dateString), "dd-MM-yyyy");
 
   useEffect(() => {
     // Fetch query parameters from URL
     const queryParams = new URLSearchParams(window.location.search);
     const itinary = JSON.parse(queryParams.get("itinary") || "[]");
-    
+
     setVoucherData({
       clientName: queryParams.get("clientName"),
       bookingId: queryParams.get("bookingId"),
@@ -37,9 +45,9 @@ const ViewVoucher = () => {
   if (!voucherData) return <div>Loading...</div>;
 
   return (
-    <div className="w-full flex justify-center items-center">
+    <div className={`w-full flex justify-center items-center ${notoSans.className}`}>
       <div className={`max-w-[894px]`}>
-        <div className="bg-teal-300 px-5 py-7">
+        <div className="bg-indigo-50 px-5 py-7">
           <header className="flex justify-center items-center gap-2">
             <Image
               src={"/logo.png"}
@@ -48,7 +56,9 @@ const ViewVoucher = () => {
               height={42}
               quality={100}
             />
-            <span className="text-2xl font-semibold dark:text-black">Travel Trail Holidays</span>
+            <span className="text-2xl font-semibold dark:text-black">
+              Travel Trail Holidays
+            </span>
           </header>
           <div className="text-[18px] mt-4 text-black">
             <div className="flex gap-2 font-medium">
@@ -56,14 +66,19 @@ const ViewVoucher = () => {
               <span className="font-semibold">{voucherData.clientName},</span>
             </div>
             <div className="mt-1 font-medium">
-            Thank you for choosing Travel Trail Holidays as your travel partner, we will make sure that your upcoming trip will be perfect and unforgettable, the details of your upcoming trip are as follows.
+              Thank you for choosing Travel Trail Holidays as your travel
+              partner, we will make sure that your upcoming trip will be perfect
+              and unforgettable, the details of your upcoming trip are as
+              follows.
             </div>
-            <div className="mt-1 font-bold text-blue-700">
-              Your booking is confirmed
-            </div>
-            <div className="mt-1 font-semibold flex items-center gap-2">
-              <span>Booking ID:</span>
-              <span>{voucherData.bookingId}</span>
+            <div className="flex flex-col items-center">
+              <div className="mt-1 font-bold text-indigo-700 text-xl">
+                Your booking is confirmed
+              </div>
+              <div className="mt-1 font-semibold flex items-center gap-2">
+                <span>Booking ID:</span>
+                <span>{voucherData.bookingId}</span>
+              </div>
             </div>
             <div className="mt-1 font-medium flex items-center gap-2">
               <span>{voucherData.adultNo} Adult,</span>
@@ -76,15 +91,45 @@ const ViewVoucher = () => {
           {voucherData.itinary.map((item: any, index: number) => (
             <div key={index} className="mt-7">
               <div className="flex gap-10 items-center p-5">
-                <FaHotel size={100} color="#FACC15" className=""/>
-                <div className="flex flex-col gap-1">
+                <FaHotel size={100} color="#FACC15" className="" />
+                <div className="flex flex-col gap-2">
                   <h1 className="text-2xl font-bold">{item.hotelName}</h1>
                   <div className="flex gap-12 items-center text-xl">
-                    <span>{item.nights}N</span>
-                    <span>{formattedDate(item.fromDate)}</span>
-                    <span>{formattedDate(item.toDate)}</span>
+                    {item.nights >= 2 ? (
+                      <>
+                        <div className="flex flex-col">
+                          <span className="text-sm font-semibold text-gray-400">
+                            Nights:
+                          </span>
+                          <span>{item.nights} Nights</span>
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        <div className="flex flex-col">
+                          <span className="text-sm font-semibold text-gray-400">
+                            Nights:
+                          </span>
+                          <span>{item.nights} Night</span>
+                        </div>
+                      </>
+                    )}
+                    <div className="flex flex-col">
+                      <span className="text-sm font-semibold text-gray-400">
+                        checkin:
+                      </span>
+                      <span>{formattedDate(item.fromDate)}</span>
+                    </div>
+                    <div className="flex flex-col">
+                      <span className="text-sm font-semibold text-gray-400">
+                        checkout:
+                      </span>
+                      <span>{formattedDate(item.toDate)}</span>
+                    </div>
                   </div>
-                  <p className="text-xl min-w-[200px] max-w-[600px]">{item.description}</p>
+                  <p className="text-xl min-w-[200px] max-w-[600px]">
+                    {item.description}
+                  </p>
                 </div>
               </div>
               <div className="h-[1px] bg-gray-400 w-full mt-3"></div>
@@ -113,11 +158,16 @@ const ViewVoucher = () => {
               Early checkin and late checkout is subject to availability and as
               per hotel policy.
             </li>
-            <li>Travel Trail Holidays Support: +91 9953276022, +91 7838088761</li>
+            <li>
+              Travel Trail Holidays Support: +91 9953276022, +91 7838088761
+            </li>
           </ul>
         </div>
         {showPrintButton && (
-          <div onClick={handlePrint} className="py-2 bg-custom-clp rounded font-medium text-white hover:bg-custom-clp/80 text-center my-20 cursor-pointer">
+          <div
+            onClick={handlePrint}
+            className="py-2 bg-custom-clp rounded font-medium text-white hover:bg-custom-clp/80 text-center my-20 cursor-pointer"
+          >
             Print
           </div>
         )}

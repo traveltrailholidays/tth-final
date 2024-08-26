@@ -1,8 +1,7 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { useRouter } from "next/navigation";
 import Section from "@/components/features/Section";
 import Container from "@/components/features/Container";
 
@@ -24,11 +23,9 @@ interface VoucherFormValues {
 }
 
 const CreateVoucher = () => {
-  const router = useRouter();
 
-  function generateBookingId(length: number = 12): string {
-    const characters =
-      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  function generateBookingId(length: number = 8): string {
+    const characters = "abcdefghijklmnopqrstuvwxyz0123456789";
     let result = "";
     const charactersLength = characters.length;
     for (let i = 0; i < length; i++) {
@@ -82,23 +79,84 @@ const CreateVoucher = () => {
 
   const handleHotelNoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const numHotels = parseInt(e.target.value) || 1;
+    const totalNights = watch("totalNights");
     const currentItinary = watch("itinary");
+    
     const newItinary = Array(numHotels)
       .fill(null)
-      .map(
-        (_, index) =>
-          currentItinary[index] || {
-            hotelName: "",
-            nights: 1,
-            fromDate: "",
-            toDate: "",
-            description: "",
-          }
-      );
+      .map((_, index) => ({
+        ...(currentItinary[index] || {
+          hotelName: "",
+          fromDate: "",
+          toDate: "",
+          description: "",
+        }),
+        nights: index === 0 ? totalNights : 0,
+      }));
+
+    // Distribute remaining nights
+    let remainingNights = totalNights;
+    for (let i = 0; i < numHotels - 1; i++) {
+      const nights = Math.ceil(remainingNights / (numHotels - i));
+      newItinary[i].nights = nights;
+      remainingNights -= nights;
+    }
+    if (numHotels > 0) {
+      newItinary[numHotels - 1].nights = remainingNights;
+    }
 
     setValue("hotelNo", numHotels);
     setValue("itinary", newItinary);
   };
+
+  const handleNightChange = (index: number, value: number) => {
+    const totalNights = watch("totalNights");
+    const currentItinary = [...watch("itinary")];
+    const numHotels = currentItinary.length;
+
+    // Ensure the new value is not negative
+    value = Math.max(0, value);
+
+    // Calculate the difference in nights
+    const diff = value - currentItinary[index].nights;
+
+    // Update the nights for the current hotel
+    currentItinary[index].nights = value;
+
+    // Distribute the difference among other hotels
+    let remainingDiff = -diff;
+    for (let i = 0; i < numHotels; i++) {
+      if (i !== index) {
+        const availableToReduce = Math.min(currentItinary[i].nights, remainingDiff);
+        currentItinary[i].nights -= availableToReduce;
+        remainingDiff -= availableToReduce;
+        if (remainingDiff <= 0) break;
+      }
+    }
+
+    // If there's still a difference, add it back to the current hotel
+    if (remainingDiff > 0) {
+      currentItinary[index].nights += remainingDiff;
+    }
+
+    // Ensure the sum of nights equals total nights
+    const sumNights = currentItinary.reduce((sum, hotel) => sum + hotel.nights, 0);
+    if (sumNights !== totalNights) {
+      const lastIndex = numHotels - 1;
+      currentItinary[lastIndex].nights += (totalNights - sumNights);
+    }
+
+    setValue("itinary", currentItinary);
+  };
+
+  useEffect(() => {
+    const subscription = watch((value, { name }) => {
+      if (name === "totalNights") {
+        handleHotelNoChange({ target: { value: value.hotelNo?.toString() } } as React.ChangeEvent<HTMLInputElement>);
+      }
+    });
+    return () => subscription.unsubscribe();
+  }, [watch]);
 
   return (
     <Section className="">
@@ -129,7 +187,15 @@ const CreateVoucher = () => {
           <div className="flex flex-col gap-3 relative">
             <input
               type="number"
-              {...register("totalNights", { valueAsNumber: true, min: 1 })}
+              {...register("totalNights", { 
+                valueAsNumber: true, 
+                min: 1,
+                onChange: (e) => {
+                  const value = Math.max(1, parseInt(e.target.value) || 1);
+                  setValue("totalNights", value);
+                  handleHotelNoChange({ target: { value: watch("hotelNo").toString() } } as React.ChangeEvent<HTMLInputElement>);
+                }
+              })}
               placeholder="Total Nights"
               className="border-neutral-200 dark:border-gray-800 border-2 pl-[125px] pr-2 py-3 rounded"
             />
@@ -193,7 +259,8 @@ const CreateVoucher = () => {
                     type="number"
                     {...register(`itinary.${index}.nights` as const, {
                       valueAsNumber: true,
-                      min: 1,
+                      min: 0,
+                      onChange: (e) => handleNightChange(index, parseInt(e.target.value) || 0),
                     })}
                     placeholder="Nights"
                     className="border-neutral-200 dark:border-gray-800 border-2 pl-20 pr-2 py-3 rounded"
