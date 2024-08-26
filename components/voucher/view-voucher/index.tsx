@@ -4,10 +4,13 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { FaHotel } from "react-icons/fa6";
 import { PiCarProfileBold } from "react-icons/pi";
+import { format, parseISO } from 'date-fns';
 
 const ViewVoucher = () => {
   const [voucherData, setVoucherData] = useState<any>(null);
   const [showPrintButton, setShowPrintButton] = useState(true);
+
+  const formattedDate = (dateString:any) => format(parseISO(dateString), 'dd-MM-yyyy');
 
   useEffect(() => {
     // Fetch query parameters from URL
@@ -53,8 +56,7 @@ const ViewVoucher = () => {
               <span className="font-semibold">{voucherData.clientName},</span>
             </div>
             <div className="mt-1 font-medium">
-              Thanks for choosing Travel Trail Holidays as your travel partner,
-              we are happy to serve you for your upcoming travel.
+            Thank you for choosing Travel Trail Holidays as your travel partner, we will make sure that your upcoming trip will be perfect and unforgettable, the details of your upcoming trip are as follows.
             </div>
             <div className="mt-1 font-bold text-blue-700">
               Your booking is confirmed
@@ -79,8 +81,8 @@ const ViewVoucher = () => {
                   <h1 className="text-2xl font-bold">{item.hotelName}</h1>
                   <div className="flex gap-12 items-center text-xl">
                     <span>{item.nights}N</span>
-                    <span>{item.fromDate}</span>
-                    <span>{item.toDate}</span>
+                    <span>{formattedDate(item.fromDate)}</span>
+                    <span>{formattedDate(item.toDate)}</span>
                   </div>
                   <p className="text-xl w-[600px]">{item.description}</p>
                 </div>
