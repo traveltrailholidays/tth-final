@@ -12,7 +12,7 @@ interface VoucherFormValues {
   hotelNo: number;
   adultNo: number;
   childrenNo: number;
-  nights: number;
+  totalNights: number;
   itinary: Array<{
     hotelName: string;
     nights: number;
@@ -46,6 +46,7 @@ const CreateVoucher = () => {
   } = useForm<VoucherFormValues>({
     defaultValues: {
       clientName: "",
+      totalNights: 1,
       bookingId: "",
       hotelNo: 1,
       adultNo: 1,
@@ -58,13 +59,13 @@ const CreateVoucher = () => {
   });
 
   const onSubmit = (data: VoucherFormValues) => {
-    // Generate a unique booking ID
-    const bookingId = generateBookingId();
+    // Use the input booking ID if provided, otherwise generate a new one
+    const bookingId = data.bookingId || generateBookingId();
 
     // Serialize form data to a query string format
     const queryParams = new URLSearchParams({
       clientName: data.clientName,
-      bookingId: bookingId, // Use the generated booking ID
+      bookingId: bookingId,
       hotelNo: data.hotelNo.toString(),
       adultNo: data.adultNo.toString(),
       childrenNo: data.childrenNo.toString(),
@@ -107,7 +108,7 @@ const CreateVoucher = () => {
           <div className="flex flex-col gap-3">
             <input
               {...register("clientName", {
-                required: "Client&apos;s name is required",
+                required: "Client name is required",
               })}
               placeholder="Client's name"
               className="border-neutral-200 dark:border-gray-800 border-2 px-2 py-3 rounded"
@@ -117,6 +118,24 @@ const CreateVoucher = () => {
                 {errors.clientName.message}
               </span>
             )}
+          </div>
+          <div className="flex flex-col gap-3">
+            <input
+              {...register("bookingId")}
+              placeholder="Booking ID (leave blank for auto-generation)"
+              className="border-neutral-200 dark:border-gray-800 border-2 px-2 py-3 rounded"
+            />
+          </div>
+          <div className="flex flex-col gap-3 relative">
+            <input
+              type="number"
+              {...register("totalNights", { valueAsNumber: true, min: 1 })}
+              placeholder="Total Nights"
+              className="border-neutral-200 dark:border-gray-800 border-2 pl-[125px] pr-2 py-3 rounded"
+            />
+            <div className="absolute top-1/2 -translate-y-1/2 left-3">
+              Total Nights :
+            </div>
           </div>
           <div className="flex flex-col gap-3 relative">
             <input
