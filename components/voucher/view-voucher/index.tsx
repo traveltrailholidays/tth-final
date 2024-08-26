@@ -87,47 +87,47 @@ const ViewVoucher = () => {
           </div>
         </div>
         <div className="px-5 py-7">
-          <h1 className="font-bold text-3xl">Hotel Summary</h1>
+          <h1 className="font-bold text-2xl">Hotel Summary</h1>
           {voucherData.itinary.map((item: any, index: number) => (
             <div key={index} className="mt-7">
               <div className="flex gap-10 items-center p-5">
                 <FaHotel size={100} color="#FACC15" className="" />
                 <div className="flex flex-col gap-2">
-                  <h1 className="text-2xl font-bold">{item.hotelName}</h1>
+                  <h1 className="text-[22px] font-bold">{item.hotelName}</h1>
                   <div className="flex gap-12 items-center text-xl">
                     {item.nights >= 2 ? (
                       <>
                         <div className="flex flex-col">
-                          <span className="text-sm font-semibold text-gray-400">
+                          <span className="text-xs font-semibold text-gray-400">
                             Nights:
                           </span>
-                          <span>{item.nights} Nights</span>
+                          <span className="text-lg">{item.nights} Nights</span>
                         </div>
                       </>
                     ) : (
                       <>
                         <div className="flex flex-col">
-                          <span className="text-sm font-semibold text-gray-400">
+                          <span className="text-xs font-semibold text-gray-400">
                             Nights:
                           </span>
-                          <span>{item.nights} Night</span>
+                          <span className="text-lg">{item.nights} Night</span>
                         </div>
                       </>
                     )}
                     <div className="flex flex-col">
-                      <span className="text-sm font-semibold text-gray-400">
+                      <span className="text-xs font-semibold text-gray-400">
                         checkin:
                       </span>
-                      <span>{formattedDate(item.fromDate)}</span>
+                      <span className="text-lg">{formattedDate(item.fromDate)}</span>
                     </div>
                     <div className="flex flex-col">
-                      <span className="text-sm font-semibold text-gray-400">
+                      <span className="text-xs font-semibold text-gray-400">
                         checkout:
                       </span>
-                      <span>{formattedDate(item.toDate)}</span>
+                      <span className="text-lg">{formattedDate(item.toDate)}</span>
                     </div>
                   </div>
-                  <p className="text-xl min-w-[200px] max-w-[600px]">
+                  <p className="text-lg min-w-[200px] max-w-[600px]">
                     {item.description}
                   </p>
                 </div>
@@ -138,14 +138,14 @@ const ViewVoucher = () => {
           <div className="mt-7">
             <div className="flex gap-10 items-center p-5">
               <PiCarProfileBold size={100} color="#FACC15" />
-              <h1 className="text-2xl font-bold">{voucherData.cabDetails}</h1>
+              <h1 className="text-[22px] font-bold">{voucherData.cabDetails}</h1>
             </div>
             <div className="h-[1px] bg-gray-400 w-full mt-3"></div>
           </div>
         </div>
         <div className="px-5 py-7">
-          <h1 className="font-bold text-3xl">Important Information</h1>
-          <ul className="list-disc px-10 text-[18px] font-medium">
+          <h1 className="font-bold text-2xl">Important Information</h1>
+          <ul className="list-disc px-10 text-[16px] font-medium">
             <li className="mt-3">
               Each guest must carry a valid ID proof (Aadhaar Card, Driving
               License or Passport) PAN card will not be accepted.
