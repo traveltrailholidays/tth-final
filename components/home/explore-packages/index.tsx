@@ -8,10 +8,10 @@ const ExplorePackages = () => {
   return (
     <Section className='border-t-[5px] dark:border-gray-800 md:border-0 bg-background'>
       <Container className='mt-12 md:mt-20 w-full flex flex-col gap-[2px]'>
-          <h1 className='heading w-full font-semibold text-gray-900 dark:text-gray-50'>
+          <h1 className='text-2xl md:text-3xl lg:text-4xl xl:text-[40px] font-bold flex flex-row gap-2 text-gray-900 dark:text-gray-50'>
             Explore packages
           </h1>
-          <h2 className='ml-[2px] mt-[2px] text-gray-800 dark:text-gray-50'>
+          <h2 className='ml-[2px] mt-2 text-gray-800 dark:text-gray-50'>
             Highlighting well-known travel spots and their package options
           </h2>
       </Container>

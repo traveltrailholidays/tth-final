@@ -10,6 +10,7 @@ import getCurrentUser from '@/frontend/actions/getCurrentUser';
 import React from 'react';
 import { Suspense } from 'react';
 import FooterBar from '@/components/footer/footer-bar';
+import ReviewsAndTestimonial from '@/components/home/reviews-testimonial';
 
 const page = async () => {
 
@@ -24,6 +25,7 @@ const page = async () => {
         <ExplorePackages />
         <ExplorePackagesCard />
         <HomeSelectCategory />
+        {/* <ReviewsAndTestimonial /> */}
         <Footer />
         <FooterBar currentUser={currentUser}/>
       </ClientOnly>

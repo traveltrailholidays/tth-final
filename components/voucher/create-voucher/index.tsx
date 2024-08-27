@@ -23,7 +23,6 @@ interface VoucherFormValues {
 }
 
 const CreateVoucher = () => {
-
   function generateBookingId(length: number = 8): string {
     const characters = "abcdefghijklmnopqrstuvwxyz0123456789";
     let result = "";
@@ -74,14 +73,14 @@ const CreateVoucher = () => {
     const url = `/voucher/view-voucher?${queryParams}`;
 
     // Open the URL in a new tab
-    window.open(url, '_blank');
+    window.open(url, "_blank");
   };
 
   const handleHotelNoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const numHotels = parseInt(e.target.value) || 1;
     const totalNights = watch("totalNights");
     const currentItinary = watch("itinary");
-    
+
     const newItinary = Array(numHotels)
       .fill(null)
       .map((_, index) => ({
@@ -127,7 +126,10 @@ const CreateVoucher = () => {
     let remainingDiff = -diff;
     for (let i = 0; i < numHotels; i++) {
       if (i !== index) {
-        const availableToReduce = Math.min(currentItinary[i].nights, remainingDiff);
+        const availableToReduce = Math.min(
+          currentItinary[i].nights,
+          remainingDiff
+        );
         currentItinary[i].nights -= availableToReduce;
         remainingDiff -= availableToReduce;
         if (remainingDiff <= 0) break;
@@ -140,10 +142,13 @@ const CreateVoucher = () => {
     }
 
     // Ensure the sum of nights equals total nights
-    const sumNights = currentItinary.reduce((sum, hotel) => sum + hotel.nights, 0);
+    const sumNights = currentItinary.reduce(
+      (sum, hotel) => sum + hotel.nights,
+      0
+    );
     if (sumNights !== totalNights) {
       const lastIndex = numHotels - 1;
-      currentItinary[lastIndex].nights += (totalNights - sumNights);
+      currentItinary[lastIndex].nights += totalNights - sumNights;
     }
 
     setValue("itinary", currentItinary);
@@ -152,7 +157,9 @@ const CreateVoucher = () => {
   useEffect(() => {
     const subscription = watch((value, { name }) => {
       if (name === "totalNights") {
-        handleHotelNoChange({ target: { value: value.hotelNo?.toString() } } as React.ChangeEvent<HTMLInputElement>);
+        handleHotelNoChange({
+          target: { value: value.hotelNo?.toString() },
+        } as React.ChangeEvent<HTMLInputElement>);
       }
     });
     return () => subscription.unsubscribe();
@@ -187,14 +194,16 @@ const CreateVoucher = () => {
           <div className="flex flex-col gap-3 relative">
             <input
               type="number"
-              {...register("totalNights", { 
-                valueAsNumber: true, 
+              {...register("totalNights", {
+                valueAsNumber: true,
                 min: 1,
                 onChange: (e) => {
                   const value = Math.max(1, parseInt(e.target.value) || 1);
                   setValue("totalNights", value);
-                  handleHotelNoChange({ target: { value: watch("hotelNo").toString() } } as React.ChangeEvent<HTMLInputElement>);
-                }
+                  handleHotelNoChange({
+                    target: { value: watch("hotelNo").toString() },
+                  } as React.ChangeEvent<HTMLInputElement>);
+                },
               })}
               placeholder="Total Nights"
               className="border-neutral-200 dark:border-gray-800 border-2 pl-[125px] pr-2 py-3 rounded"
@@ -260,7 +269,8 @@ const CreateVoucher = () => {
                     {...register(`itinary.${index}.nights` as const, {
                       valueAsNumber: true,
                       min: 0,
-                      onChange: (e) => handleNightChange(index, parseInt(e.target.value) || 0),
+                      onChange: (e) =>
+                        handleNightChange(index, parseInt(e.target.value) || 0),
                     })}
                     placeholder="Nights"
                     className="border-neutral-200 dark:border-gray-800 border-2 pl-20 pr-2 py-3 rounded"
@@ -269,30 +279,36 @@ const CreateVoucher = () => {
                     Nights :
                   </div>
                 </div>
-                <div className="flex flex-col gap-3">
+                <div className="flex flex-col gap-3 relative">
                   <input
                     type="date"
                     {...register(`itinary.${index}.fromDate` as const, {
                       required: "From Date is required",
                     })}
                     placeholder="From Date"
-                    className="border-neutral-200 dark:border-gray-800 border-2 px-2 py-3 rounded"
+                    className="border-neutral-200 dark:border-gray-800 border-2 pl-[90px] pr-2 py-3 rounded"
                   />
+                  <div className="absolute top-1/2 -translate-y-1/2 left-3">
+                    checkin :
+                  </div>
                   {errors.itinary?.[index]?.fromDate && (
                     <span className="text-custom-clp">
                       {errors.itinary[index]?.fromDate?.message}
                     </span>
                   )}
                 </div>
-                <div className="flex flex-col gap-3">
+                <div className="flex flex-col gap-3 relative">
                   <input
                     type="date"
                     {...register(`itinary.${index}.toDate` as const, {
                       required: "To Date is required",
                     })}
                     placeholder="To Date"
-                    className="border-neutral-200 dark:border-gray-800 border-2 px-2 py-3 rounded"
+                    className="border-neutral-200 dark:border-gray-800 border-2 pl-[100px] pr-2 py-3 rounded"
                   />
+                  <div className="absolute top-1/2 -translate-y-1/2 left-3">
+                    checkout :
+                  </div>
                   {errors.itinary?.[index]?.toDate && (
                     <span className="text-custom-clp">
                       {errors.itinary[index]?.toDate?.message}

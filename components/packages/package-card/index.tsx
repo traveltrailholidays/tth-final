@@ -53,7 +53,7 @@ const PackageCard: React.FC<PackageCardProps> = ({ data, reservation, currentUse
           fill
           src={data.imageSrc}
           alt='package'
-          className='rounded-t h-[200px] object-cover group-hover:scale-110 transition'
+          className='rounded-t h-[200px] object-cover group-hover:scale-110 transition duration-300'
         />
         <div className='absolute top-3 right-3'>
           <HeartButton

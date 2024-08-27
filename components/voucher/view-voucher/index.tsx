@@ -63,7 +63,7 @@ const ViewVoucher = () => {
           <div className="text-[18px] mt-4 text-black">
             <div className="flex gap-2 font-medium">
               Dear
-              <span className="font-semibold">{voucherData.clientName},</span>
+              <span className="font-semibold capitalize">{voucherData.clientName},</span>
             </div>
             <div className="mt-1 font-medium">
               Thank you for choosing Travel Trail Holidays as your travel
