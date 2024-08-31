@@ -17,8 +17,10 @@ const Logo: FC<LogoProps> = ({ className }) => {
       <Image
         src="/logo.png"
         alt='logo'
-        width={36}
-        height={36}
+        width={1000}
+        height={1000}
+        priority
+        className='w-9 h-9'
       />
       <span className='font-semibold text-2xl text-custom-clp'>
         Travel Trail Holidays
