@@ -188,7 +188,7 @@ const CreateVoucher = () => {
                             placeholder="Hotel's No"
                             className="border-neutral-200 dark:border-gray-800 border-2 pl-[110px] pr-2 py-3 rounded"
                         />
-                        <div className="absolute top-1/2 -translate-y-1/2 left-3">Hotel's No :</div>
+                        <div className="absolute top-1/2 -translate-y-1/2 left-3">Hotel&apos;s No :</div>
                     </div>
                     <div className="flex flex-col gap-3 relative">
                         <input
