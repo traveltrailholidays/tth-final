@@ -24,7 +24,7 @@ const page = async () => {
         <ExplorePackages />
         <ExplorePackagesCard />
         <HomeSelectCategory />
-        {/* <ReviewsAndTestimonial /> */}
+        <ReviewsAndTestimonial />
         <Footer />
         <FooterBar currentUser={currentUser}/>
     </Suspense>

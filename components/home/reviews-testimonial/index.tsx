@@ -1,6 +1,7 @@
 import Container from '@/components/features/Container';
 import Section from '@/components/features/Section';
 import React from 'react';
+import ReviewsCarousel from './reviews-carousel';
 
 const ReviewsAndTestimonial = () => {
   return (
@@ -14,6 +15,7 @@ const ReviewsAndTestimonial = () => {
                     From Happy, Delighted Trips, Check out what they have to say
                 </h2>
             </div>
+            <ReviewsCarousel />
         </Container>
     </Section>
   )
