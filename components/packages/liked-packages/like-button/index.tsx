@@ -12,8 +12,6 @@ interface HeartButtonProps {
 
 const HeartButton: React.FC<HeartButtonProps> = ({ listingId, currentUser }) => {
 
-    console.log(listingId);
-
     const { hasFavourited, toggleFavourite } = useFavourite({ listingId, currentUser});
 
   return (
