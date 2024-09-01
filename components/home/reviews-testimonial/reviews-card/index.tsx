@@ -19,7 +19,7 @@ const ReviewsCard: React.FC<ReviewsCardProps> = ({ name, img, reviewText }) => {
             alt=''
             width={1000}
             height={1000}
-            className='object-cover rounded-full select-none mt-10 h-[65px] w-[65px] select-none'
+            className='object-cover rounded-full select-none mt-10 h-[65px] w-[65px]'
         />
         <h1 className='mt-3 text-lg font-medium'>
             {name}
