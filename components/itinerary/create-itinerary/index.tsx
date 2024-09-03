@@ -1,0 +1,312 @@
+'use client';
+
+import React, { useCallback, useMemo } from 'react';
+import { useForm, useFieldArray, Controller } from 'react-hook-form';
+import Section from '@/components/features/Section';
+import Container from '@/components/features/Container';
+
+interface VoucherFormValues {
+    clientName: string;
+    bookingId: string;
+    hotelNo: number;
+    adultNo: number;
+    childrenNo: number;
+    totalNights: number;
+    itinary: Array<{
+        hotelName: string;
+        nights: number;
+        fromDate: string;
+        toDate: string;
+        description: string;
+    }>;
+    cabDetails: string;
+}
+
+const CreateItinerary = () => {
+    const generateBookingId = useCallback((length: number = 8): string => {
+        const characters = 'abcdefghijklmnopqrstuvwxyz0123456789';
+        return Array.from({ length }, () => characters.charAt(Math.floor(Math.random() * characters.length))).join('');
+    }, []);
+
+    const {
+        register,
+        control,
+        handleSubmit,
+        setValue,
+        watch,
+        formState: { errors },
+    } = useForm<VoucherFormValues>({
+        defaultValues: {
+            clientName: '',
+            totalNights: 1,
+            bookingId: '',
+            hotelNo: 1,
+            adultNo: 1,
+            childrenNo: 0,
+            itinary: [{ hotelName: '', nights: 1, fromDate: '', toDate: '', description: '' }],
+            cabDetails: '',
+        },
+    });
+
+    const { fields, append, remove } = useFieldArray({
+        control,
+        name: 'itinary',
+    });
+
+    const onSubmit = useCallback(
+        (data: VoucherFormValues) => {
+            const bookingId = data.bookingId || generateBookingId();
+            const queryParams = new URLSearchParams();
+
+            // Add each form field to the query parameters
+            queryParams.append('clientName', data.clientName);
+            queryParams.append('bookingId', bookingId);
+            queryParams.append('hotelNo', data.hotelNo.toString());
+            queryParams.append('adultNo', data.adultNo.toString());
+            queryParams.append('childrenNo', data.childrenNo.toString());
+            queryParams.append('totalNights', data.totalNights.toString());
+            queryParams.append('itinary', JSON.stringify(data.itinary));
+            queryParams.append('cabDetails', data.cabDetails);
+
+            window.open(`/voucher/view-voucher?${queryParams.toString()}`, '_blank');
+        },
+        [generateBookingId]
+    );
+
+    const handleHotelNoChange = useCallback(
+        (e: React.ChangeEvent<HTMLInputElement>) => {
+            const numHotels = Math.max(1, parseInt(e.target.value) || 1);
+            const totalNights = watch('totalNights');
+            const currentItinary = watch('itinary');
+
+            const newItinary = Array(numHotels)
+                .fill(null)
+                .map((_, index) => ({
+                    ...(currentItinary[index] || { hotelName: '', fromDate: '', toDate: '', description: '' }),
+                    nights: index === 0 ? totalNights : 0,
+                }));
+
+            let remainingNights = totalNights;
+            for (let i = 0; i < numHotels - 1; i++) {
+                const nights = Math.ceil(remainingNights / (numHotels - i));
+                newItinary[i].nights = nights;
+                remainingNights -= nights;
+            }
+            if (numHotels > 0) {
+                newItinary[numHotels - 1].nights = remainingNights;
+            }
+
+            setValue('hotelNo', numHotels);
+            setValue('itinary', newItinary);
+        },
+        [setValue, watch]
+    );
+
+    const handleNightChange = useCallback(
+        (index: number, value: number) => {
+            const totalNights = watch('totalNights');
+            const currentItinary = [...watch('itinary')];
+            const numHotels = currentItinary.length;
+
+            value = Math.max(0, value);
+            const diff = value - currentItinary[index].nights;
+            currentItinary[index].nights = value;
+
+            let remainingDiff = -diff;
+            for (let i = 0; i < numHotels; i++) {
+                if (i !== index) {
+                    const availableToReduce = Math.min(currentItinary[i].nights, remainingDiff);
+                    currentItinary[i].nights -= availableToReduce;
+                    remainingDiff -= availableToReduce;
+                    if (remainingDiff <= 0) break;
+                }
+            }
+
+            if (remainingDiff > 0) {
+                currentItinary[index].nights += remainingDiff;
+            }
+
+            const sumNights = currentItinary.reduce((sum, hotel) => sum + hotel.nights, 0);
+            if (sumNights !== totalNights) {
+                const lastIndex = numHotels - 1;
+                currentItinary[lastIndex].nights += totalNights - sumNights;
+            }
+
+            setValue('itinary', currentItinary);
+        },
+        [setValue, watch]
+    );
+
+    const memoizedFields = useMemo(() => fields, [fields]);
+
+    return (
+        <Section className="">
+            <Container className="mt-28 mb-20 shadow-all-side dark:shadow-gray-800 w-full rounded py-5 px-5 flex flex-col gap-10">
+                <h1 className="text-3xl font-semibold">Create a itinerary</h1>
+                <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-8">
+                    <div className="flex flex-col gap-3">
+                        <input
+                            {...register('clientName', {
+                                required: 'Client name is required',
+                            })}
+                            placeholder="Trip's title"
+                            className="border-neutral-200 dark:border-gray-800 border-2 px-2 py-3 rounded"
+                        />
+                        {errors.clientName && <span className="text-custom-clp">{errors.clientName.message}</span>}
+                    </div>
+                    <div className="flex flex-col gap-3">
+                        <input
+                            {...register('bookingId')}
+                            placeholder="Booking ID (leave blank for auto-generation)"
+                            className="border-neutral-200 dark:border-gray-800 border-2 px-2 py-3 rounded"
+                        />
+                    </div>
+                    <div className="flex flex-col gap-3 relative">
+                        <input
+                            type="number"
+                            {...register('totalNights', {
+                                valueAsNumber: true,
+                                min: 1,
+                                onChange: (e) => {
+                                    const value = Math.max(1, parseInt(e.target.value) || 1);
+                                    setValue('totalNights', value);
+                                    handleHotelNoChange({
+                                        target: { value: watch('hotelNo').toString() },
+                                    } as React.ChangeEvent<HTMLInputElement>);
+                                },
+                            })}
+                            placeholder="Total Nights"
+                            className="border-neutral-200 dark:border-gray-800 border-2 pl-[125px] pr-2 py-3 rounded"
+                        />
+                        <div className="absolute top-1/2 -translate-y-1/2 left-3">Total Nights :</div>
+                    </div>
+                    <div className="flex flex-col gap-3 relative">
+                        <input
+                            type="number"
+                            {...register('hotelNo', { valueAsNumber: true, min: 1 })}
+                            onChange={handleHotelNoChange}
+                            placeholder="Hotel's No"
+                            className="border-neutral-200 dark:border-gray-800 border-2 pl-[110px] pr-2 py-3 rounded"
+                        />
+                        <div className="absolute top-1/2 -translate-y-1/2 left-3">Hotel&apos;s No :</div>
+                    </div>
+                    <div className="flex flex-col gap-3 relative">
+                        <input
+                            type="number"
+                            {...register('adultNo', { valueAsNumber: true, min: 1 })}
+                            placeholder="Adults"
+                            className="border-neutral-200 dark:border-gray-800 border-2 pl-20 pr-2 py-3 rounded"
+                        />
+                        <div className="absolute top-1/2 -translate-y-1/2 left-3">Adults :</div>
+                    </div>
+                    <div className="flex flex-col gap-3 relative">
+                        <input
+                            type="number"
+                            {...register('childrenNo', { valueAsNumber: true, min: 0 })}
+                            placeholder="Children"
+                            className="border-neutral-200 dark:border-gray-800 border-2 pl-[100px] pr-2 py-3 rounded"
+                        />
+                        <div className="absolute top-1/2 -translate-y-1/2 left-3">Children :</div>
+                    </div>
+                    <ul className="flex flex-col gap-8">
+                        {memoizedFields.map((field, index) => (
+                            <li key={field.id} className="flex flex-col gap-2">
+                                <div className="flex flex-col gap-3">
+                                    <input
+                                        {...register(`itinary.${index}.hotelName` as const, {
+                                            required: 'Hotel name is required',
+                                        })}
+                                        placeholder="Hotel's name"
+                                        className="border-neutral-200 dark:border-gray-800 border-2 px-2 py-3 rounded"
+                                    />
+                                    {errors.itinary?.[index]?.hotelName && (
+                                        <span className="text-custom-clp">
+                                            {errors.itinary[index]?.hotelName?.message}
+                                        </span>
+                                    )}
+                                </div>
+                                <div className="flex flex-col gap-3 relative">
+                                    <input
+                                        type="number"
+                                        {...register(`itinary.${index}.nights` as const, {
+                                            valueAsNumber: true,
+                                            min: 0,
+                                            onChange: (e) => handleNightChange(index, parseInt(e.target.value) || 0),
+                                        })}
+                                        placeholder="Nights"
+                                        className="border-neutral-200 dark:border-gray-800 border-2 pl-20 pr-2 py-3 rounded"
+                                    />
+                                    <div className="absolute top-1/2 -translate-y-1/2 left-3">Nights :</div>
+                                </div>
+                                <div className="flex flex-col gap-3 relative">
+                                    <input
+                                        type="date"
+                                        {...register(`itinary.${index}.fromDate` as const, {
+                                            required: 'From Date is required',
+                                        })}
+                                        placeholder="From Date"
+                                        className="border-neutral-200 dark:border-gray-800 border-2 pl-[90px] pr-2 py-3 rounded"
+                                    />
+                                    <div className="absolute top-1/2 -translate-y-1/2 left-3">checkin :</div>
+                                    {errors.itinary?.[index]?.fromDate && (
+                                        <span className="text-custom-clp">
+                                            {errors.itinary[index]?.fromDate?.message}
+                                        </span>
+                                    )}
+                                </div>
+                                <div className="flex flex-col gap-3 relative">
+                                    <input
+                                        type="date"
+                                        {...register(`itinary.${index}.toDate` as const, {
+                                            required: 'To Date is required',
+                                        })}
+                                        placeholder="To Date"
+                                        className="border-neutral-200 dark:border-gray-800 border-2 pl-[100px] pr-2 py-3 rounded"
+                                    />
+                                    <div className="absolute top-1/2 -translate-y-1/2 left-3">checkout :</div>
+                                    {errors.itinary?.[index]?.toDate && (
+                                        <span className="text-custom-clp">
+                                            {errors.itinary[index]?.toDate?.message}
+                                        </span>
+                                    )}
+                                </div>
+                                <div className="flex flex-col gap-3">
+                                    <textarea
+                                        {...register(`itinary.${index}.description` as const, {
+                                            required: 'Description is required',
+                                        })}
+                                        placeholder="Description"
+                                        className="border-neutral-200 dark:border-gray-800 border-2 px-2 py-3 rounded"
+                                    />
+                                    {errors.itinary?.[index]?.description && (
+                                        <span className="text-custom-clp">
+                                            {errors.itinary[index]?.description?.message}
+                                        </span>
+                                    )}
+                                </div>
+                            </li>
+                        ))}
+                    </ul>
+                    <div className="flex flex-col gap-3">
+                        <input
+                            {...register('cabDetails', {
+                                required: 'Cab details are required',
+                            })}
+                            placeholder="Cab Details"
+                            className="border-neutral-200 dark:border-gray-800 border-2 px-2 py-3 rounded"
+                        />
+                        {errors.cabDetails && <span className="text-custom-clp">{errors.cabDetails.message}</span>}
+                    </div>
+                    <button
+                        type="submit"
+                        className="py-2 bg-custom-clp rounded font-medium text-white hover:bg-custom-clp/80"
+                    >
+                        Generate PDF
+                    </button>
+                </form>
+            </Container>
+        </Section>
+    );
+};
+
+export default React.memo(CreateItinerary);

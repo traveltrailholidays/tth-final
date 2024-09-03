@@ -1,10 +1,10 @@
-import CreateVoucher from '@/components/voucher/create-voucher';
+import CreateItinerary from '@/components/itinerary/create-itinerary';
 import React from 'react';
 
 const page = () => {
     return (
         <>
-            <CreateVoucher />
+            <CreateItinerary />
         </>
     );
 };

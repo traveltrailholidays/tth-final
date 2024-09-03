@@ -13,7 +13,6 @@ const ReviewsCard: React.FC<ReviewsCardProps> = ({ name, img, reviewText }) => {
         <h1 className='text-center text-xl'>
             {reviewText}
         </h1>
-        <div className='border border-black w-full max-w-[400px] mt-10'></div>
         <Image 
             src={img || '/noProfile.webp'}
             alt=''
