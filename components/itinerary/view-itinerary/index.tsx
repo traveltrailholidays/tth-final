@@ -21,7 +21,7 @@ const ViewItinerary = () => {
         setShowPrintButton(false);
         setTimeout(() => window.print(), 0);
         setTimeout(() => setShowPrintButton(true), 2000);
-    }, []);
+    }, []); 
 
     return (
         <div className={`w-full flex justify-center items-center ${notoSans.className}`}>
