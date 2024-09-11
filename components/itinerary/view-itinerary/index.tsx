@@ -50,7 +50,7 @@ const ViewItinerary = () => {
                             <span>Dear Client&apos;s Name,</span>
                             <span>Greeting from Travel Trail Holidays!🌍</span>
                             <span>
-                                We're thrilled to present you with a selection of incredible holiday packages tailored
+                                We&lsquo;re thrilled to present you with a selection of incredible holiday packages tailored
                                 just for you by Travel Trail Holidays, one of the most trusted names in travel!✨
                             </span>
                             <div className="mt-10 flex flex-col gap-1">
@@ -210,7 +210,7 @@ const ViewItinerary = () => {
                     </div>
                     <div className="px-5 py-12 flex flex-col gap-5 font-medium text-lg">
                         <span>
-                            In case you'd want to customize this quote/ itinerary or if its price doesn't fit your
+                            In case you&lsquo;d want to customize this quote/ itinerary or if its price doesn&lsquo;t fit your
                             budget, then kindly let the agent know about it directly at 9953276022.
                         </span>
                         <span>
