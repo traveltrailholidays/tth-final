@@ -157,7 +157,7 @@ const CreateVoucher: React.FC = () => {
                 <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-8">
                     <input
                         {...register('clientName', { required: 'Client name is required' })}
-                        placeholder="Client's name"
+                        placeholder="Client&apos;s name"
                         className="border-neutral-200 dark:border-gray-800 border-2 px-2 py-3 rounded"
                     />
                     {errors.clientName && <span className="text-red-500">{errors.clientName.message}</span>}
@@ -212,7 +212,7 @@ const CreateVoucher: React.FC = () => {
 
                     <input
                         {...register('tripAdvisorName', { required: 'Trip advisor name is required' })}
-                        placeholder="Trip advisor's name"
+                        placeholder="Trip advisor&apos;s name"
                         className="border-neutral-200 dark:border-gray-800 border-2 px-2 py-3 rounded"
                     />
                     {errors.tripAdvisorName && <span className="text-red-500">{errors.tripAdvisorName.message}</span>}

@@ -56,7 +56,7 @@ const SearchBar = () => {
 
       router.push(url);
     }
-  }, [selectedLocation, selectedDuration, selectedMonth, params, router]);
+  }, [selectedLocation, selectedDuration, selectedMonth, params, router, isFormValid]);
 
   return (
     <Section className='absolute bottom-0 translate-y-1/2 w-full left-0'>

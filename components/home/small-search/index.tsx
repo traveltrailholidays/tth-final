@@ -54,7 +54,7 @@ const SmallDeviceSearch = () => {
 
             router.push(url);
         }
-    }, [selectedLocation, selectedDuration, selectedMonth, params, router]);
+    }, [selectedLocation, selectedDuration, selectedMonth, params, router, isFormValid]);
 
     return (
         <Section className='mt-24 mb-12 md:hidden'>

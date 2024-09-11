@@ -48,7 +48,7 @@ const PackagesHeroSection: React.FC<PackagesHeroSectionProps> = () => {
 
             router.push(url);
         }
-    }, [selectedLocation, params, router]);
+    }, [selectedLocation, params, router, isFormValid]);
 
     return (
         <ClientOnly>
