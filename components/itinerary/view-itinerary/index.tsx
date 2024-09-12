@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Noto_Sans } from 'next/font/google';
 import Logo from '@/components/features/Logo';
 import { FaPhoneAlt, FaRegArrowAltCircleRight } from 'react-icons/fa';
@@ -14,8 +14,60 @@ const notoSans = Noto_Sans({
     weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
 });
 
+interface ItineraryFormValues {
+    clientName: string;
+    packageTitle: string;
+    numberOfDays: number;
+    numberOfNights: number;
+    numberOfHotels: number;
+    numberOfInclusions: number;
+    numberOfExclusions: number;
+    tripAdvisorName: string;
+    cabs: string;
+    days: Array<{
+        dayNumber: number;
+        summary: string;
+        imageSrc: string;
+        description: string;
+    }>;
+    hotels: Array<{
+        placeName: string;
+        placeDescription: string;
+        hotelName: string;
+        roomType: string;
+        hotelDescription: string;
+    }>;
+    inclusions: Array<{ value: string }>;
+    exclusions: Array<{ value: string }>;
+}
+
 const ViewItinerary = () => {
+    const [itineraryData, setitineraryData] = useState<ItineraryFormValues | null>(null);
     const [showPrintButton, setShowPrintButton] = useState(true);
+
+    useEffect(() => {
+        const queryParams = new URLSearchParams(window.location.search);
+        const days = JSON.parse(queryParams.get('days') || '[]');
+        const hotels = JSON.parse(queryParams.get('hotels') || '[]');
+        const inclusions = JSON.parse(queryParams.get('inclusions') || '[]');
+        const exclusions = JSON.parse(queryParams.get('exclusions') || '[]');
+
+        setitineraryData({
+            clientName: queryParams.get('clientName') || '',
+            packageTitle: queryParams.get('packageTitle') || '',
+            numberOfDays: parseInt(queryParams.get('numberOfDays') || '1', 10),
+            numberOfNights: parseInt(queryParams.get('numberOfNights') || '1', 10),
+            numberOfHotels: parseInt(queryParams.get('numberOfHotels') || '0', 10),
+            numberOfInclusions: parseInt(queryParams.get('numberOfInclusions') || '1', 10),
+            numberOfExclusions: parseInt(queryParams.get('numberOfExclusions') || '1', 10),
+            tripAdvisorName: queryParams.get('tripAdvisorName') || '',
+            cabs: queryParams.get('cabs') || '',
+            days,
+            hotels,
+            inclusions,
+            exclusions,
+        });
+    }, []);
 
     const handlePrint = useCallback(() => {
         setShowPrintButton(false);
@@ -47,15 +99,18 @@ const ViewItinerary = () => {
                 <div className="w-full flex flex-col gap-10">
                     <div className="bg-sky-50">
                         <div className="px-5 py-5 flex flex-col gap-1 w-full">
-                            <span>Dear Client&apos;s Name,</span>
+                            <span>Dear {itineraryData?.clientName},</span>
                             <span>Greeting from Travel Trail Holidays!🌍</span>
                             <span>
-                                We&lsquo;re thrilled to present you with a selection of incredible holiday packages tailored
-                                just for you by Travel Trail Holidays, one of the most trusted names in travel!✨
+                                We&lsquo;re thrilled to present you with a selection of incredible holiday packages
+                                tailored just for you by Travel Trail Holidays, one of the most trusted names in
+                                travel!✨
                             </span>
                             <div className="mt-10 flex flex-col gap-1">
-                                <span className="font-semibold text-xl">Package Title</span>
-                                <span className="font-semibold">6N/7D</span>
+                                <span className="font-semibold text-xl">{itineraryData?.packageTitle}</span>
+                                <span className="font-semibold">
+                                    {itineraryData?.numberOfNights}N/{itineraryData?.numberOfDays}D
+                                </span>
                             </div>
                         </div>
                     </div>
@@ -63,115 +118,53 @@ const ViewItinerary = () => {
                         <span className="text-3xl font-bold">Itinerary</span>
                         <div className="h-[2px] w-full bg-border mt-2"></div>
                         <div className="mt-7 flex flex-col gap-7">
-                            <div>
-                                <div className="flex items-center gap-2">
-                                    <span className="text-xl font-semibold">Day 1:</span>
-                                    <span className="text-xl">Day 1 detail</span>
+                            {itineraryData?.days.map((day, index) => (
+                                <div>
+                                    <div className="flex items-center gap-2">
+                                        <span className="text-xl font-semibold">Day {index + 1}:</span>
+                                        <span className="text-xl">{day.summary}</span>
+                                    </div>
+                                    <img
+                                        src={day.imageSrc}
+                                        alt=""
+                                        width={1000}
+                                        height={1000}
+                                        className="w-full h-80 mt-2 object-cover"
+                                    />
+                                    <p className="mt-2">{day.description}</p>
                                 </div>
-                                <Image
-                                    src={'/packageHeroBg.jpg'}
-                                    alt=""
-                                    width={1000}
-                                    height={1000}
-                                    className="w-full h-80 mt-2 object-fill"
-                                />
-                                <p className="mt-2">
-                                    Wakeup in the morning post fresh breakfast check out from the hotel than move
-                                    towards Guptkashi after reaching there complete your checking formalities take some
-                                    rest spend your leisure time have Dinner and stay overnight .
-                                </p>
-                            </div>
-                            <div>
-                                <div className="flex items-center gap-2">
-                                    <span className="text-xl font-semibold">Day 2:</span>
-                                    <span className="text-xl">Day 2 detail</span>
-                                </div>
-                                <Image
-                                    src={'/packageHeroBg.jpg'}
-                                    alt=""
-                                    width={1000}
-                                    height={1000}
-                                    className="w-full h-80 mt-2 object-fill"
-                                />
-                                <p className="mt-2">
-                                    Wakeup in the morning post fresh breakfast check out from the hotel than move
-                                    towards Guptkashi after reaching there complete your checking formalities take some
-                                    rest spend your leisure time have Dinner and stay overnight .
-                                </p>
-                            </div>
-                            <div>
-                                <div className="flex items-center gap-2">
-                                    <span className="text-xl font-semibold">Day 3:</span>
-                                    <span className="text-xl">Day 3 detail</span>
-                                </div>
-                                <Image
-                                    src={'/packageHeroBg.jpg'}
-                                    alt=""
-                                    width={1000}
-                                    height={1000}
-                                    className="w-full h-80 mt-2 object-fill"
-                                />
-                                <p className="mt-2">
-                                    Wakeup in the morning post fresh breakfast check out from the hotel than move
-                                    towards Guptkashi after reaching there complete your checking formalities take some
-                                    rest spend your leisure time have Dinner and stay overnight .
-                                </p>
-                            </div>
+                            ))}
                         </div>
                     </div>
                     <div className="px-5 py-5">
                         <span className="text-3xl font-bold">Hotel Summary</span>
                         <div className="h-[2px] w-full bg-border mt-2"></div>
                         <div className="mt-7 flex flex-col gap-7">
-                            <div>
-                                <div className="flex items-center gap-2">
-                                    <span className="text-xl font-semibold">Place Name:</span>
-                                    <span className="text-xl">1st night</span>
-                                </div>
-                                <div className="flex gap-10 items-center p-5">
-                                    <FaHotel size={100} color="#FACC15" className="" />
-                                    <div className="flex flex-col gap-1">
-                                        <span className="text-custom-clp font-semibold text-lg">Hotel&apos;s Name</span>
-                                        <span className="text-lg">Room Type: Delux</span>
-                                        <span className="text-lg">Hotel&apos;s description</span>
+                            {itineraryData?.hotels.map((hotel, index) => (
+                                <div>
+                                    <div className="flex items-center gap-2">
+                                        <span className="text-xl font-semibold">{hotel.placeName}</span>
+                                        <span className="text-xl">{hotel.placeDescription}</span>
+                                    </div>
+                                    <div className="flex gap-10 items-center p-5">
+                                        <FaHotel size={100} color="#FACC15" className="" />
+                                        <div className="flex flex-col gap-1">
+                                            <span className="text-custom-clp font-semibold text-lg">
+                                                {hotel.hotelName}
+                                            </span>
+                                            <span className="text-lg">Room Type: {hotel.roomType}</span>
+                                            <span className="text-lg">{hotel.hotelDescription}</span>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div>
-                                <div className="flex items-center gap-2">
-                                    <span className="text-xl font-semibold">Place Name:</span>
-                                    <span className="text-xl">2nd, 4th night</span>
-                                </div>
-                                <div className="flex gap-10 items-center p-5">
-                                    <FaHotel size={100} color="#FACC15" className="" />
-                                    <div className="flex flex-col gap-1">
-                                        <span className="text-custom-clp font-semibold text-lg">Hotel&apos;s Name</span>
-                                        <span className="text-lg">Room Type: Delux</span>
-                                        <span className="text-lg">Hotel&apos;s description</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div>
-                                <div className="flex items-center gap-2">
-                                    <span className="text-xl font-semibold">Place Name:</span>
-                                    <span className="text-xl">3rd night</span>
-                                </div>
-                                <div className="flex gap-10 items-center p-5">
-                                    <FaHotel size={100} color="#FACC15" className="" />
-                                    <div className="flex flex-col gap-1">
-                                        <span className="text-custom-clp font-semibold text-lg">Hotel&apos;s Name</span>
-                                        <span className="text-lg">Room Type: Delux</span>
-                                        <span className="text-lg">Hotel&apos;s description</span>
-                                    </div>
-                                </div>
-                            </div>
+                            ))}
                         </div>
                     </div>
                     <div className="px-5">
                         <span className="text-3xl font-bold">Cabs</span>
                         <div className="h-[2px] w-full bg-border mt-2"></div>
                         <div className="mt-3">
-                            <span className="text-lg">Dzire/Sudan</span>
+                            <span className="text-lg">{itineraryData?.cabs}</span>
                         </div>
                     </div>
                     <div className="px-5 flex gap-10">
@@ -179,43 +172,35 @@ const ViewItinerary = () => {
                             <span className="text-3xl font-bold">Inclusions</span>
                             <div className="h-[2px] w-full bg-border mt-2"></div>
                             <div className="mt-3 flex flex-col gap-2">
-                                <div className="flex gap-2 items-center">
-                                    <FaCheck color="#22C55E" size={20} />
-                                    <span>Dzire/Sudan</span>
-                                </div>
-                                <div className="flex gap-2 items-center">
-                                    <FaCheck color="#22C55E" size={20} />
-                                    <span>Dzire/Sudan</span>
-                                </div>
-                                <div className="flex gap-2 items-center">
-                                    <FaCheck color="#22C55E" size={20} />
-                                    <span>Dzire/Sudan</span>
-                                </div>
+                                {itineraryData?.inclusions.map((inclusion) => (
+                                    <div className="flex gap-2 items-center">
+                                        <FaCheck color="#22C55E" size={20} />
+                                        <span>{inclusion.value}</span>
+                                    </div>
+                                ))}
                             </div>
                         </div>
                         <div className="w-1/2">
                             <span className="text-3xl font-bold">Exclusions</span>
                             <div className="h-[2px] w-full bg-border mt-2"></div>
                             <div className="mt-3 flex flex-col gap-2">
-                                <div className="flex gap-2 items-center">
-                                    <RxCrossCircled color="#EF4444" size={20} />
-                                    <span>Dzire/Sudan</span>
-                                </div>
-                                <div className="flex gap-2 items-center">
-                                    <RxCrossCircled color="#EF4444" size={20} />
-                                    <span>Dzire/Sudan</span>
-                                </div>
+                                {itineraryData?.exclusions.map((exclusion) => (
+                                    <div className="flex gap-2 items-center">
+                                        <RxCrossCircled color="#EF4444" size={20} />
+                                        <span>{exclusion.value}</span>
+                                    </div>
+                                ))}
                             </div>
                         </div>
                     </div>
                     <div className="px-5 py-12 flex flex-col gap-5 font-medium text-lg">
                         <span>
-                            In case you&lsquo;d want to customize this quote/ itinerary or if its price doesn&lsquo;t fit your
-                            budget, then kindly let the agent know about it directly at 9953276022.
+                            In case you&lsquo;d want to customize this quote/ itinerary or if its price doesn&lsquo;t
+                            fit your budget, then kindly let the agent know about it directly at 9953276022.
                         </span>
                         <span>
                             If you need further support, please reply to this email or call us on 1800 123 55555. Your
-                            Trip Advisor is <span className="font-bold">Ashutosh Rai</span>.
+                            Trip Advisor is <span className="font-bold">{itineraryData?.tripAdvisorName}</span>.
                         </span>
                     </div>
                 </div>

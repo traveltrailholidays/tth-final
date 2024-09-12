@@ -73,8 +73,7 @@ const CreateVoucher = () => {
         [generateBookingId]
     );
 
-    const handleHotelNoChange = useCallback(
-        (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleHotelNoChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
             const numHotels = Math.max(1, parseInt(e.target.value) || 1);
             const totalNights = watch('totalNights');
             const currentItinary = watch('itinary');

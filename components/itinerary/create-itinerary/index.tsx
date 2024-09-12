@@ -5,7 +5,7 @@ import { useForm, useFieldArray } from 'react-hook-form';
 import Section from '@/components/features/Section';
 import Container from '@/components/features/Container';
 
-interface VoucherFormValues {
+interface ItineraryFormValues {
     clientName: string;
     packageTitle: string;
     numberOfDays: number;
@@ -14,6 +14,7 @@ interface VoucherFormValues {
     numberOfInclusions: number;
     numberOfExclusions: number;
     tripAdvisorName: string;
+    cabs: string;
     days: Array<{
         dayNumber: number;
         summary: string;
@@ -31,7 +32,7 @@ interface VoucherFormValues {
     exclusions: Array<{ value: string }>;
 }
 
-const CreateVoucher: React.FC = () => {
+const CreateItinerary: React.FC = () => {
     const {
         register,
         control,
@@ -39,7 +40,7 @@ const CreateVoucher: React.FC = () => {
         setValue,
         watch,
         formState: { errors },
-    } = useForm<VoucherFormValues>({
+    } = useForm<ItineraryFormValues>({
         defaultValues: {
             clientName: '',
             packageTitle: '',
@@ -49,6 +50,7 @@ const CreateVoucher: React.FC = () => {
             numberOfInclusions: 1,
             numberOfExclusions: 1,
             tripAdvisorName: '',
+            cabs: '',
             days: [{ dayNumber: 1, summary: '', imageSrc: '', description: '' }],
             hotels: [{ placeName: '', placeDescription: '', hotelName: '', roomType: '', hotelDescription: '' }],
             inclusions: [{ value: '' }],
@@ -56,108 +58,146 @@ const CreateVoucher: React.FC = () => {
         },
     });
 
-    const { fields: dayFields, append: appendDay, remove: removeDay } = useFieldArray({
+    const {
+        fields: dayFields,
+        append,
+        remove,
+    } = useFieldArray({
         control,
         name: 'days',
     });
 
-    const { fields: hotelFields, append: appendHotel, remove: removeHotel } = useFieldArray({
+    const {
+        fields: hotelFields,
+        append: appendHotel,
+        remove: removeHotel,
+    } = useFieldArray({
         control,
         name: 'hotels',
     });
 
-    const { fields: inclusionFields, append: appendInclusion, remove: removeInclusion } = useFieldArray({
+    const {
+        fields: inclusionFields,
+        append: appendInclusion,
+        remove: removeInclusion,
+    } = useFieldArray({
         control,
         name: 'inclusions',
     });
 
-    const { fields: exclusionFields, append: appendExclusion, remove: removeExclusion } = useFieldArray({
+    const {
+        fields: exclusionFields,
+        append: appendExclusion,
+        remove: removeExclusion,
+    } = useFieldArray({
         control,
         name: 'exclusions',
     });
 
-    const onSubmit = (data: VoucherFormValues) => {
+    const onSubmit = (data: ItineraryFormValues) => {
         console.log(data);
-        // Handle form submission
+        const queryParams = new URLSearchParams();
+
+        queryParams.append('clientName', data.clientName);
+        queryParams.append('packageTitle', data.packageTitle);
+        queryParams.append('numberOfDays', data.numberOfDays.toString());
+        queryParams.append('numberOfNights', data.numberOfNights.toString());
+        queryParams.append('numberOfHotels', data.numberOfHotels.toString());
+        queryParams.append('numberOfInclusions', data.numberOfInclusions.toString());
+        queryParams.append('numberOfExclusions', data.numberOfExclusions.toString());
+        queryParams.append('days', JSON.stringify(data.days));
+        queryParams.append('hotels', JSON.stringify(data.hotels));
+        queryParams.append('inclusions', JSON.stringify(data.inclusions));
+        queryParams.append('exclusions', JSON.stringify(data.exclusions));
+        queryParams.append('tripAdvisorName', data.tripAdvisorName);
+        queryParams.append('cabs', data.cabs);
+
+        window.open(`/itinerary/view-itinerary?${queryParams.toString()}`, '_blank');
     };
 
-    const handleDaysChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-        const days = Math.max(1, parseInt(e.target.value) || 1);
-        setValue('numberOfDays', days);
-        setValue('numberOfNights', days - 1);
+    const handleDaysChange = useCallback(
+        (e: React.ChangeEvent<HTMLInputElement>) => {
+            const days = Math.max(1, parseInt(e.target.value) || 1);
+            setValue('numberOfDays', days);
+            setValue('numberOfNights', days - 1);
+            const currentDays = watch('days');
 
-        // Adjust days array
-        const currentDays = watch('days');
-        if (days > currentDays.length) {
-            for (let i = currentDays.length + 1; i <= days; i++) {
-                appendDay({ dayNumber: i, summary: '', imageSrc: '', description: '' });
-            }
-        } else if (days < currentDays.length) {
-            for (let i = currentDays.length; i > days; i--) {
-                removeDay(i - 1);
-            }
-        }
-    }, [setValue, watch, appendDay, removeDay]);
+            const newDays = Array(days)
+                .fill(null)
+                .map((_, index) => ({
+                    ...(currentDays[index] || { dayNumber: index+1, summary: '', imageSrc: '', description: '' }),
+                    
+                })
+            );
+            setValue('days', newDays);
+        },
+        [setValue, watch]
+    );
 
-    const handleHotelsChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-        const hotels = Math.max(1, parseInt(e.target.value) || 1);
-        setValue('numberOfHotels', hotels);
+    const handleHotelsChange = useCallback(
+        (e: React.ChangeEvent<HTMLInputElement>) => {
+            const hotels = Math.max(1, parseInt(e.target.value) || 1);
+            setValue('numberOfHotels', hotels);
 
-        // Adjust hotels array
-        const currentHotels = watch('hotels');
-        if (hotels > currentHotels.length) {
-            for (let i = currentHotels.length + 1; i <= hotels; i++) {
-                appendHotel({ placeName: '', placeDescription: '', hotelName: '', roomType: '', hotelDescription: '' });
-            }
-        } else if (hotels < currentHotels.length) {
-            for (let i = currentHotels.length; i > hotels; i--) {
-                removeHotel(i - 1);
-            }
-        }
-    }, [setValue, watch, appendHotel, removeHotel]);
+            const currentHotels = watch('hotels');
+            const newHotels = Array(hotels)
+                .fill(null)
+                .map((_, index) => ({
+                    ...(currentHotels[index] || {placeName: '', placeDescription: '', hotelName: '', roomType: '', hotelDescription: '', }),
+                    
+                })
+            );
+            setValue('hotels', newHotels);
+        },
+        [setValue, watch]
+    );
 
-    const handleInclusionsChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-        const inclusions = Math.max(1, parseInt(e.target.value) || 1);
-        setValue('numberOfInclusions', inclusions);
+    const handleInclusionsChange = useCallback(
+        (e: React.ChangeEvent<HTMLInputElement>) => {
+            const inclusions = Math.max(1, parseInt(e.target.value) || 1);
+            setValue('numberOfInclusions', inclusions);
 
-        // Adjust inclusions array
-        const currentInclusions = watch('inclusions');
-        if (inclusions > currentInclusions.length) {
-            for (let i = currentInclusions.length + 1; i <= inclusions; i++) {
-                appendInclusion({ value: '' });
-            }
-        } else if (inclusions < currentInclusions.length) {
-            for (let i = currentInclusions.length; i > inclusions; i--) {
-                removeInclusion(i - 1);
-            }
-        }
-    }, [setValue, watch, appendInclusion, removeInclusion]);
+            // Adjust inclusions array
+            const currentInclusions = watch('inclusions');
+            const newInclusion = Array(inclusions)
+                .fill(null)
+                .map((_, index) => ({
+                    ...(currentInclusions[index] || { value: '' }),
+                    
+                })
+            );
+            setValue('inclusions', newInclusion);
+        },
+        [setValue, watch]
+    );
 
-    const handleExclusionsChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-        const exclusions = Math.max(1, parseInt(e.target.value) || 1);
-        setValue('numberOfExclusions', exclusions);
+    const handleExclusionsChange = useCallback(
+        (e: React.ChangeEvent<HTMLInputElement>) => {
+            const exclusions = Math.max(1, parseInt(e.target.value) || 1);
+            setValue('numberOfExclusions', exclusions);
 
-        // Adjust exclusions array
-        const currentExclusions = watch('exclusions');
-        if (exclusions > currentExclusions.length) {
-            for (let i = currentExclusions.length + 1; i <= exclusions; i++) {
-                appendExclusion({ value: '' });
-            }
-        } else if (exclusions < currentExclusions.length) {
-            for (let i = currentExclusions.length; i > exclusions; i--) {
-                removeExclusion(i - 1);
-            }
-        }
-    }, [setValue, watch, appendExclusion, removeExclusion]);
+            // Adjust exclusions array
+            const currentExclusions = watch('exclusions');
+            const newExclusion = Array(exclusions)
+                .fill(null)
+                .map((_, index) => ({
+                    ...(currentExclusions[index] || { value: '' }),
+                    
+                })
+            );
+            setValue('exclusions', newExclusion);
+        },
+        [setValue, watch]
+    );
 
     return (
         <Section className="">
             <Container className="mt-28 mb-20 shadow-all-side dark:shadow-gray-800 w-full rounded py-5 px-5 flex flex-col gap-10">
-                <h1 className="text-3xl font-semibold">Create a voucher</h1>
+                <h1 className="text-3xl font-semibold">Create a Itinerary</h1>
                 <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-8">
                     <input
                         {...register('clientName', { required: 'Client name is required' })}
-                        placeholder="Client&apos;s name"
+                        placeholder="Client's name"
                         className="border-neutral-200 dark:border-gray-800 border-2 px-2 py-3 rounded"
                     />
                     {errors.clientName && <span className="text-red-500">{errors.clientName.message}</span>}
@@ -169,63 +209,88 @@ const CreateVoucher: React.FC = () => {
                     />
                     {errors.packageTitle && <span className="text-red-500">{errors.packageTitle.message}</span>}
 
-                    <div className="flex gap-4">
+                    <div className="flex gap-4 flex-wrap md:flex-nowrap">
+                        <div className="flex flex-col gap-3 relative w-full">
+                            <input
+                                type="number"
+                                {...register('numberOfDays', { valueAsNumber: true, min: 1 })}
+                                onChange={handleDaysChange}
+                                placeholder="Number of days"
+                                className="border-neutral-200 dark:border-gray-800 border-2 pl-[110px] pr-2 py-3 rounded"
+                            />
+                            <div className="absolute top-1/2 -translate-y-1/2 left-3">Total Days :</div>
+                        </div>
+                        <div className="flex flex-col gap-3 relative w-full">
+                            <input
+                                type="number"
+                                {...register('numberOfNights', { valueAsNumber: true, min: 0 })}
+                                placeholder="Number of nights"
+                                className="border-neutral-200 dark:border-gray-800 border-2 pl-[125px] pr-2 py-3 rounded"
+                                readOnly
+                            />
+                            <div className="absolute top-1/2 -translate-y-1/2 left-3">Total Nights :</div>
+                        </div>
+                    </div>
+
+                    <div className="flex flex-col gap-3 relative w-full">
                         <input
                             type="number"
-                            {...register('numberOfDays', { valueAsNumber: true, min: 1 })}
-                            onChange={handleDaysChange}
-                            placeholder="Number of days"
-                            className="border-neutral-200 dark:border-gray-800 border-2 px-2 py-3 rounded flex-1"
+                            {...register('numberOfHotels', { valueAsNumber: true, min: 1 })}
+                            onChange={handleHotelsChange}
+                            placeholder="Number of hotels"
+                            className="border-neutral-200 dark:border-gray-800 border-2 pl-[125px] pr-2 py-3 rounded"
                         />
+                        <div className="absolute top-1/2 -translate-y-1/2 left-3">Total Hotels :</div>
+                    </div>
+
+                    <div className="flex flex-col gap-3 relative w-full">
                         <input
                             type="number"
-                            {...register('numberOfNights', { valueAsNumber: true, min: 0 })}
-                            placeholder="Number of nights"
-                            className="border-neutral-200 dark:border-gray-800 border-2 px-2 py-3 rounded flex-1"
-                            readOnly
+                            {...register('numberOfInclusions', { valueAsNumber: true, min: 1 })}
+                            onChange={handleInclusionsChange}
+                            placeholder="Number of inclusions"
+                            className="border-neutral-200 dark:border-gray-800 border-2 pl-[155px] pr-2 py-3 rounded"
                         />
+                        <div className="absolute top-1/2 -translate-y-1/2 left-3">No. of Inclusion :</div>
+                    </div>
+
+                    <div className="flex flex-col gap-3 relative w-full">
+                        <input
+                            type="number"
+                            {...register('numberOfExclusions', { valueAsNumber: true, min: 1 })}
+                            onChange={handleExclusionsChange}
+                            placeholder="Number of exclusions"
+                            className="border-neutral-200 dark:border-gray-800 border-2 pl-[155px] pr-2 py-3 rounded"
+                        />
+                        <div className="absolute top-1/2 -translate-y-1/2 left-3">No. of Exclusion :</div>
                     </div>
 
                     <input
-                        type="number"
-                        {...register('numberOfHotels', { valueAsNumber: true, min: 1 })}
-                        onChange={handleHotelsChange}
-                        placeholder="Number of hotels"
-                        className="border-neutral-200 dark:border-gray-800 border-2 px-2 py-3 rounded"
-                    />
-
-                    <input
-                        type="number"
-                        {...register('numberOfInclusions', { valueAsNumber: true, min: 1 })}
-                        onChange={handleInclusionsChange}
-                        placeholder="Number of inclusions"
-                        className="border-neutral-200 dark:border-gray-800 border-2 px-2 py-3 rounded"
-                    />
-
-                    <input
-                        type="number"
-                        {...register('numberOfExclusions', { valueAsNumber: true, min: 1 })}
-                        onChange={handleExclusionsChange}
-                        placeholder="Number of exclusions"
-                        className="border-neutral-200 dark:border-gray-800 border-2 px-2 py-3 rounded"
-                    />
-
-                    <input
                         {...register('tripAdvisorName', { required: 'Trip advisor name is required' })}
-                        placeholder="Trip advisor&apos;s name"
+                        placeholder="Trip advisor's name"
                         className="border-neutral-200 dark:border-gray-800 border-2 px-2 py-3 rounded"
                     />
                     {errors.tripAdvisorName && <span className="text-red-500">{errors.tripAdvisorName.message}</span>}
 
+                    <input
+                        {...register('cabs', { required: 'Trip advisor name is required' })}
+                        placeholder="Cab details"
+                        className="border-neutral-200 dark:border-gray-800 border-2 px-2 py-3 rounded"
+                    />
+                    {errors.cabs && <span className="text-red-500">{errors.cabs.message}</span>}
+
                     <h2 className="text-2xl font-semibold mt-4">Day Details</h2>
                     {dayFields.map((field, index) => (
                         <div key={field.id} className="flex flex-col gap-4 border-2 p-4 rounded">
-                            <input
-                                {...register(`days.${index}.dayNumber` as const, { valueAsNumber: true })}
-                                placeholder="Day number"
-                                className="border-neutral-200 dark:border-gray-800 border-2 px-2 py-3 rounded"
-                                readOnly
-                            />
+                            <div className="flex flex-col gap-3 relative w-full">
+                                <input
+                                    {...register(`days.${index}.dayNumber` as const, { valueAsNumber: true })}
+                                    placeholder="Day number"
+                                    className="border-neutral-200 dark:border-gray-800 border-2 pl-[45px] pr-2 py-3 rounded"
+                                    readOnly
+                                />
+                                <div className="absolute top-1/2 -translate-y-1/2 left-3">Day</div>
+                            </div>
                             <input
                                 {...register(`days.${index}.summary` as const)}
                                 placeholder="Day summary"
@@ -299,7 +364,7 @@ const CreateVoucher: React.FC = () => {
                         type="submit"
                         className="py-2 bg-custom-clp rounded font-medium text-white hover:bg-custom-clp/80"
                     >
-                        Generate Voucher
+                        Generate Itinerary
                     </button>
                 </form>
             </Container>
@@ -307,4 +372,4 @@ const CreateVoucher: React.FC = () => {
     );
 };
 
-export default React.memo(CreateVoucher);
+export default React.memo(CreateItinerary);
