@@ -15,6 +15,7 @@ interface ItineraryFormValues {
     numberOfExclusions: number;
     tripAdvisorName: string;
     cabs: string;
+    quotePrice: number;
     days: Array<{
         dayNumber: number;
         summary: string;
@@ -51,6 +52,7 @@ const CreateItinerary: React.FC = () => {
             numberOfExclusions: 1,
             tripAdvisorName: '',
             cabs: '',
+            quotePrice: 0,
             days: [{ dayNumber: 1, summary: '', imageSrc: '', description: '' }],
             hotels: [{ placeName: '', placeDescription: '', hotelName: '', roomType: '', hotelDescription: '' }],
             inclusions: [{ value: '' }],
@@ -111,6 +113,7 @@ const CreateItinerary: React.FC = () => {
         queryParams.append('exclusions', JSON.stringify(data.exclusions));
         queryParams.append('tripAdvisorName', data.tripAdvisorName);
         queryParams.append('cabs', data.cabs);
+        queryParams.append('quotePrice', data.quotePrice.toString());
 
         window.open(`/itinerary/view-itinerary?${queryParams.toString()}`, '_blank');
     };
@@ -278,6 +281,17 @@ const CreateItinerary: React.FC = () => {
                         className="border-neutral-200 dark:border-gray-800 border-2 px-2 py-3 rounded"
                     />
                     {errors.cabs && <span className="text-red-500">{errors.cabs.message}</span>}
+
+                    <div className="flex flex-col gap-3 relative w-full">
+                        <input
+                            type="number"
+                            {...register('quotePrice', { valueAsNumber: true, min: 0 })}
+                            placeholder="Quote price"
+                            className="border-neutral-200 dark:border-gray-800 border-2 pl-[125px] pr-2 py-3 rounded"
+                        />
+                        {errors.quotePrice && <span className="text-red-500">{errors.quotePrice.message}</span>}
+                        <div className="absolute top-1/2 -translate-y-1/2 left-3">Quote Price :</div>
+                    </div>
 
                     <h2 className="text-2xl font-semibold mt-4">Day Details</h2>
                     {dayFields.map((field, index) => (

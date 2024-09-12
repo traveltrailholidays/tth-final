@@ -24,6 +24,7 @@ interface ItineraryFormValues {
     numberOfExclusions: number;
     tripAdvisorName: string;
     cabs: string;
+    quotePrice: number;
     days: Array<{
         dayNumber: number;
         summary: string;
@@ -62,6 +63,7 @@ const ViewItinerary = () => {
             numberOfExclusions: parseInt(queryParams.get('numberOfExclusions') || '1', 10),
             tripAdvisorName: queryParams.get('tripAdvisorName') || '',
             cabs: queryParams.get('cabs') || '',
+            quotePrice: parseInt(queryParams.get('quotePrice') || '0', 10),
             days,
             hotels,
             inclusions,
@@ -112,16 +114,20 @@ const ViewItinerary = () => {
                                     {itineraryData?.numberOfNights}N/{itineraryData?.numberOfDays}D
                                 </span>
                             </div>
+                            <div className='mt-4 text-lg flex gap-2'>
+                                <span className='font-semibold'>Quoted price:</span>
+                                <span>₹{itineraryData?.quotePrice}</span>
+                            </div>
                         </div>
                     </div>
                     <div className="px-5">
                         <span className="text-3xl font-bold">Itinerary</span>
                         <div className="h-[2px] w-full bg-border mt-2"></div>
-                        <div className="mt-7 flex flex-col gap-7">
+                        <div className="mt-7 flex flex-col gap-9">
                             {itineraryData?.days.map((day, index) => (
                                 <div key={index}>
-                                    <div className="flex items-center gap-2">
-                                        <span className="text-xl font-semibold">Day {index + 1}:</span>
+                                    <div className="flex gap-2">
+                                        <span className="text-xl font-semibold min-w-[70px]">Day {index + 1}:</span>
                                         <span className="text-xl">{day.summary}</span>
                                     </div>
                                     <img
@@ -143,7 +149,7 @@ const ViewItinerary = () => {
                             {itineraryData?.hotels.map((hotel, index) => (
                                 <div key={index}>
                                     <div className="flex items-center gap-2">
-                                        <span className="text-xl font-semibold">{hotel.placeName}</span>
+                                        <span className="text-xl font-semibold">{hotel.placeName}:</span>
                                         <span className="text-xl">{hotel.placeDescription}</span>
                                     </div>
                                     <div className="flex gap-10 items-center p-5">
