@@ -119,7 +119,7 @@ const ViewItinerary = () => {
                         <div className="h-[2px] w-full bg-border mt-2"></div>
                         <div className="mt-7 flex flex-col gap-7">
                             {itineraryData?.days.map((day, index) => (
-                                <div>
+                                <div key={index}>
                                     <div className="flex items-center gap-2">
                                         <span className="text-xl font-semibold">Day {index + 1}:</span>
                                         <span className="text-xl">{day.summary}</span>
@@ -141,7 +141,7 @@ const ViewItinerary = () => {
                         <div className="h-[2px] w-full bg-border mt-2"></div>
                         <div className="mt-7 flex flex-col gap-7">
                             {itineraryData?.hotels.map((hotel, index) => (
-                                <div>
+                                <div key={index}>
                                     <div className="flex items-center gap-2">
                                         <span className="text-xl font-semibold">{hotel.placeName}</span>
                                         <span className="text-xl">{hotel.placeDescription}</span>
@@ -172,8 +172,8 @@ const ViewItinerary = () => {
                             <span className="text-3xl font-bold">Inclusions</span>
                             <div className="h-[2px] w-full bg-border mt-2"></div>
                             <div className="mt-3 flex flex-col gap-2">
-                                {itineraryData?.inclusions.map((inclusion) => (
-                                    <div className="flex gap-2 items-center">
+                                {itineraryData?.inclusions.map((inclusion, index) => (
+                                    <div className="flex gap-2 items-center" key={index}>
                                         <FaCheck color="#22C55E" size={20} />
                                         <span>{inclusion.value}</span>
                                     </div>
@@ -184,8 +184,8 @@ const ViewItinerary = () => {
                             <span className="text-3xl font-bold">Exclusions</span>
                             <div className="h-[2px] w-full bg-border mt-2"></div>
                             <div className="mt-3 flex flex-col gap-2">
-                                {itineraryData?.exclusions.map((exclusion) => (
-                                    <div className="flex gap-2 items-center">
+                                {itineraryData?.exclusions.map((exclusion, index) => (
+                                    <div key={index} className="flex gap-2 items-center">
                                         <RxCrossCircled color="#EF4444" size={20} />
                                         <span>{exclusion.value}</span>
                                     </div>
