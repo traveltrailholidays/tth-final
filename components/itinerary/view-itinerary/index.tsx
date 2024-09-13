@@ -23,6 +23,7 @@ interface ItineraryFormValues {
     numberOfInclusions: number;
     numberOfExclusions: number;
     tripAdvisorName: string;
+    tripAdvisorNumber: string;
     cabs: string;
     quotePrice: number;
     days: Array<{
@@ -62,6 +63,7 @@ const ViewItinerary = () => {
             numberOfInclusions: parseInt(queryParams.get('numberOfInclusions') || '1', 10),
             numberOfExclusions: parseInt(queryParams.get('numberOfExclusions') || '1', 10),
             tripAdvisorName: queryParams.get('tripAdvisorName') || '',
+            tripAdvisorNumber: queryParams.get('tripAdvisorNumber') || '',
             cabs: queryParams.get('cabs') || '',
             quotePrice: parseInt(queryParams.get('quotePrice') || '0', 10),
             days,
@@ -75,7 +77,7 @@ const ViewItinerary = () => {
         setShowPrintButton(false);
         setTimeout(() => window.print(), 0);
         setTimeout(() => setShowPrintButton(true), 2000);
-    }, []); 
+    }, []);
 
     return (
         <div className={`w-full flex justify-center items-center ${notoSans.className}`}>
@@ -114,8 +116,8 @@ const ViewItinerary = () => {
                                     {itineraryData?.numberOfNights}N/{itineraryData?.numberOfDays}D
                                 </span>
                             </div>
-                            <div className='mt-4 text-lg flex gap-2'>
-                                <span className='font-semibold'>Quoted price:</span>
+                            <div className="mt-4 text-lg flex gap-2">
+                                <span className="font-semibold">Quoted price:</span>
                                 <span>₹{itineraryData?.quotePrice}</span>
                             </div>
                         </div>
@@ -205,8 +207,9 @@ const ViewItinerary = () => {
                             fit your budget, then kindly let the agent know about it directly at 9953276022.
                         </span>
                         <span>
-                            If you need further support, please reply to this email or call us on 1800 123 55555. Your
-                            Trip Advisor is <span className="font-bold">{itineraryData?.tripAdvisorName}</span>.
+                            If you need further support, please reply to this email or call us on +91{' '}
+                            {itineraryData?.tripAdvisorNumber}. Your Trip Advisor is{' '}
+                            <span className="font-bold">{itineraryData?.tripAdvisorName}</span>.
                         </span>
                     </div>
                 </div>
@@ -273,6 +276,30 @@ const ViewItinerary = () => {
                     </div>
                     <div className="mt-10">
                         <div>
+                            <span className="text-2xl font-bold">Child Policy:</span>
+                            <div className="h-[2px] w-full bg-gray-400 mt-2"></div>
+                        </div>
+                        <BulletPoints
+                            icon={FaRegArrowAltCircleRight}
+                            size={16}
+                            color="#22C55E"
+                            text="Children over 12 years or abode will be charged as adults , relevant docs need to be produced at the time of check in the hotel."
+                        />
+                        <BulletPoints
+                            icon={FaRegArrowAltCircleRight}
+                            size={16}
+                            color="#22C55E"
+                            text="In Case of Group travel infant will be charged the half of the adult&lsquo;s transport cost."
+                        />
+                        <BulletPoints
+                            icon={FaRegArrowAltCircleRight}
+                            size={16}
+                            color="#22C55E"
+                            text="Till 5-year-old FREE with no extra bed. 6-12 years 50% of the adult cost & 12 and above full charges will be applicable."
+                        />
+                    </div>
+                    <div className="mt-10">
+                        <div>
                             <span className="text-2xl font-bold">Terms & Condition:</span>
                             <div className="h-[2px] w-full bg-gray-400 mt-2"></div>
                         </div>
@@ -298,7 +325,73 @@ const ViewItinerary = () => {
                             icon={FaRegArrowAltCircleRight}
                             size={16}
                             color="#22C55E"
-                            text="In case your package needs to be cancelled due to any natural calamity, weather conditions etc. Travel Trail Holidays shall strive to give you the maximum possible refund subject to the agreement made with our trade partners/vendors."
+                            text="Travel Trail Holidays reserves the right to modify the itinerary at any point due to reasons including, but not limited to: Force Majeure events, strikes, fairs, festivals, weather conditions, traffic problems, overbooking of hotels/flights, cancellation/re-routing of flights, or closure of/entry restrictions at a place of visit. While we will do our best to make suitable alternate arrangements, we will not be held liable for any refunds or compensation claims arising from this. Costs incurred due to the listed reasons will be borne by the client."
+                        />
+                        <BulletPoints
+                            icon={FaRegArrowAltCircleRight}
+                            size={16}
+                            color="#22C55E"
+                            text="Places mentioned for sightseeing in the itinerary may not be accessible with the vehicle assigned for your trip. Some locations may require special vehicles or permits to visit, and any associated costs will need to be borne by the traveler. Please consult with TripAdvisor before finalizing your trip."
+                        />
+                        <BulletPoints
+                            icon={FaRegArrowAltCircleRight}
+                            size={16}
+                            color="#22C55E"
+                            text="Weather Conditions and Costs: In case of weather conditions causing guests/clients to be stuck on the way or at sightseeing places, the cost of evacuation will be borne by the client. Additionally, costs for deviation and extension of ticket validity are not included."
+                        />
+                        <BulletPoints
+                            icon={FaRegArrowAltCircleRight}
+                            size={16}
+                            color="#22C55E"
+                            text="Cancellations and Disputes: For queries regarding cancellations and refunds, please refer to our Cancellation Policy. Disputes, if any, shall be subject to the exclusive jurisdiction of the courts in New Delhi."
+                        />
+                        <BulletPoints
+                            icon={FaRegArrowAltCircleRight}
+                            size={16}
+                            color="#22C55E"
+                            text="Additional Costs and Flight Changes: Any costs arising from natural or political strikes, calamities (e.g., landslides, roadblocks) will be borne directly by the client on the spot. In case of flight rescheduling or cancellation, changes to Travel Trail Holidays bookings cannot be amended."
+                        />
+                        <BulletPoints
+                            icon={FaRegArrowAltCircleRight}
+                            size={16}
+                            color="#22C55E"
+                            text="It is the responsibility of each traveler to carry a personal first aid kit during the journey. The first aid kit should include basic medical supplies such as bandages, antiseptic wipes, pain relievers, and any personal medications required. Please carry your first aid kit on your journey"
+                        />
+                    </div>
+                    <div className="mt-10">
+                        <div>
+                            <span className="text-2xl font-bold">Transport Terms (if applicable):</span>
+                            <div className="h-[2px] w-full bg-gray-400 mt-2"></div>
+                        </div>
+                        <BulletPoints
+                            icon={FaRegArrowAltCircleRight}
+                            size={16}
+                            color="#22C55E"
+                            text="In case of any mechanical issues or road accidents involving the car during your trip, Travel Trail Holidays will provide a replacement or alternate vehicle arrangements within 5 hours from the time the incident is reported. If additional costs are incurred, they will be borne by the user."
+                        />
+                        <BulletPoints
+                            icon={FaRegArrowAltCircleRight}
+                            size={16}
+                            color="#22C55E"
+                            text="In case you are traveling in hilly areas, the air conditioning may not work. Additionally, if your vehicle reaches the destination of your trip after 10 PM, night charges will apply."
+                        />
+                        <BulletPoints
+                            icon={FaRegArrowAltCircleRight}
+                            size={16}
+                            color="#22C55E"
+                            text="Sightseeing hours are from 10 AM to 5 PM only. Exceeding these hours will incur an additional cost of INR 300 per hour."
+                        />
+                        <BulletPoints
+                            icon={FaRegArrowAltCircleRight}
+                            size={16}
+                            color="#22C55E"
+                            text="Any additional sightseeing not covered in the itinerary can be arranged at an extra cost. This should be discussed with the trip advisor."
+                        />
+                        <BulletPoints
+                            icon={FaRegArrowAltCircleRight}
+                            size={16}
+                            color="#22C55E"
+                            text="Travel Trail Holidays reserves the right to terminate your trip at any point in time if payment is delayed."
                         />
                     </div>
                 </div>

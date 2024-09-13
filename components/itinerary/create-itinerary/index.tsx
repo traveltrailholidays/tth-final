@@ -14,6 +14,7 @@ interface ItineraryFormValues {
     numberOfInclusions: number;
     numberOfExclusions: number;
     tripAdvisorName: string;
+    tripAdvisorNumber: string;
     cabs: string;
     quotePrice: number;
     days: Array<{
@@ -51,6 +52,7 @@ const CreateItinerary: React.FC = () => {
             numberOfInclusions: 1,
             numberOfExclusions: 1,
             tripAdvisorName: '',
+            tripAdvisorNumber: '',
             cabs: '',
             quotePrice: 0,
             days: [{ dayNumber: 1, summary: '', imageSrc: '', description: '' }],
@@ -112,6 +114,7 @@ const CreateItinerary: React.FC = () => {
         queryParams.append('inclusions', JSON.stringify(data.inclusions));
         queryParams.append('exclusions', JSON.stringify(data.exclusions));
         queryParams.append('tripAdvisorName', data.tripAdvisorName);
+        queryParams.append('tripAdvisorNumber', data.tripAdvisorNumber);
         queryParams.append('cabs', data.cabs);
         queryParams.append('quotePrice', data.quotePrice.toString());
 
@@ -269,13 +272,6 @@ const CreateItinerary: React.FC = () => {
                     </div>
 
                     <input
-                        {...register('tripAdvisorName', { required: 'Trip advisor name is required' })}
-                        placeholder="Trip advisor's name"
-                        className="border-neutral-200 dark:border-gray-800 border-2 px-2 py-3 rounded"
-                    />
-                    {errors.tripAdvisorName && <span className="text-red-500">{errors.tripAdvisorName.message}</span>}
-
-                    <input
                         {...register('cabs', { required: 'Trip advisor name is required' })}
                         placeholder="Cab details"
                         className="border-neutral-200 dark:border-gray-800 border-2 px-2 py-3 rounded"
@@ -292,6 +288,20 @@ const CreateItinerary: React.FC = () => {
                         {errors.quotePrice && <span className="text-red-500">{errors.quotePrice.message}</span>}
                         <div className="absolute top-1/2 -translate-y-1/2 left-3">Quote Price :</div>
                     </div>
+
+                    <input
+                        {...register('tripAdvisorName', { required: 'Trip advisor name is required' })}
+                        placeholder="Trip advisor's name"
+                        className="border-neutral-200 dark:border-gray-800 border-2 px-2 py-3 rounded"
+                    />
+                    {errors.tripAdvisorName && <span className="text-red-500">{errors.tripAdvisorName.message}</span>}
+
+                    <input
+                        {...register('tripAdvisorNumber', { required: 'Trip advisor name is required' })}
+                        placeholder="Trip advisor's number"
+                        className="border-neutral-200 dark:border-gray-800 border-2 px-2 py-3 rounded"
+                    />
+                    {errors.tripAdvisorNumber && <span className="text-red-500">{errors.tripAdvisorNumber.message}</span>}
 
                     <h2 className="text-2xl font-semibold mt-4">Day Details</h2>
                     {dayFields.map((field, index) => (
