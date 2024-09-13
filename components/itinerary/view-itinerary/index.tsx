@@ -182,12 +182,7 @@ const ViewItinerary = () => {
                             <div className="mt-3 flex flex-col gap-2">
                                 {itineraryData?.inclusions.map((inclusion, index) => (
                                     <div className="flex gap-2 items-center" key={index}>
-                                        <BulletPoints
-                                            icon={FaCheck}
-                                            size={16}
-                                            color="#22C55E"
-                                            text={inclusion.value}
-                                        />
+                                        <BulletPoints icon={FaCheck} size={16} color="#22C55E" text={inclusion.value} />
                                     </div>
                                 ))}
                             </div>
@@ -206,6 +201,33 @@ const ViewItinerary = () => {
                                         />
                                     </div>
                                 ))}
+                            </div>
+                        </div>
+                    </div>
+                    <div className="px-5 mt-5">
+                        <span className="text-3xl font-bold">Payment Process</span>
+                        <div className="h-[2px] w-full bg-border mt-2"></div>
+                        <div className="mt-3">
+                            <div className="text-lg">Following mode of payments are available:</div>
+                            <div className="mt-7 w-full flex gap-10 justify-between">
+                                <div className="w-1/2">
+                                    <span className="text-xl uppercase font-semibold">1. Pay in account</span>
+                                    <div className="ml-6 flex flex-col gap-1 mt-3">
+                                        <span>Bank Name: IndusInd Bank</span>
+                                        <span>Account Name: Travel Trail Holidays Private Limited</span>
+                                        <span>Account Number: 259625992025</span>
+                                        <span>IFSC Code: INDB0000735</span>
+                                        <span>Account Type: Current</span>
+                                    </div>
+                                </div>
+                                <div className="w-1/2">
+                                    <span className="text-xl uppercase font-semibold">2. Pay by UPI</span>
+                                    <div className="ml-6 flex flex-col gap-1 mt-3">
+                                        <span>Merchant: Travel Trail Holidays</span>
+                                        <span>UPI ID: 9625992025@upi</span>
+                                        <Image src={'/upi.jpg'} alt="" width={200} height={200} />
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
