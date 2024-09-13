@@ -182,8 +182,12 @@ const ViewItinerary = () => {
                             <div className="mt-3 flex flex-col gap-2">
                                 {itineraryData?.inclusions.map((inclusion, index) => (
                                     <div className="flex gap-2 items-center" key={index}>
-                                        <FaCheck color="#22C55E" size={20} />
-                                        <span>{inclusion.value}</span>
+                                        <BulletPoints
+                                            icon={FaCheck}
+                                            size={16}
+                                            color="#22C55E"
+                                            text={inclusion.value}
+                                        />
                                     </div>
                                 ))}
                             </div>
@@ -194,8 +198,12 @@ const ViewItinerary = () => {
                             <div className="mt-3 flex flex-col gap-2">
                                 {itineraryData?.exclusions.map((exclusion, index) => (
                                     <div key={index} className="flex gap-2 items-center">
-                                        <RxCrossCircled color="#EF4444" size={20} />
-                                        <span>{exclusion.value}</span>
+                                        <BulletPoints
+                                            icon={RxCrossCircled}
+                                            size={16}
+                                            color="#EF4444"
+                                            text={exclusion.value}
+                                        />
                                     </div>
                                 ))}
                             </div>
