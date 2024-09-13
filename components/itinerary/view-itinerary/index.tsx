@@ -223,9 +223,11 @@ const ViewItinerary = () => {
                                 <div className="w-1/2">
                                     <span className="text-xl uppercase font-semibold">2. Pay by UPI</span>
                                     <div className="ml-6 flex flex-col gap-1 mt-3">
-                                        <span>Merchant: Travel Trail Holidays</span>
+                                        <span>Merchant: Travel Trail Holidays Private Holidays</span>
                                         <span>UPI ID: 9625992025@upi</span>
+                                        <span>UPI No: 9625992025</span>
                                         <Image src={'/upi.jpg'} alt="" width={200} height={200} />
+                                        <Image src={'/pay.jpg'} alt="" width={1000000} height={1000000} quality={100} className='w-[250px]'/>
                                     </div>
                                 </div>
                             </div>
