@@ -4,10 +4,12 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { Noto_Sans } from 'next/font/google';
 import Logo from '@/components/features/Logo';
 import { FaPhoneAlt, FaRegArrowAltCircleRight } from 'react-icons/fa';
-import { FaCheck, FaHotel } from 'react-icons/fa6';
+import { FaCheck, FaHotel, FaSuitcase } from 'react-icons/fa6';
 import { RxCrossCircled } from 'react-icons/rx';
 import Image from 'next/image';
 import BulletPoints from './bullet-points';
+import { MdRateReview } from 'react-icons/md';
+import { AiFillThunderbolt } from 'react-icons/ai';
 
 const notoSans = Noto_Sans({
     subsets: ['latin'],
@@ -25,6 +27,9 @@ interface ItineraryFormValues {
     tripAdvisorName: string;
     tripAdvisorNumber: string;
     cabs: string;
+    flights: string;
+    totalTrips: number;
+    totalReviews: number;
     quotePrice: number;
     days: Array<{
         dayNumber: number;
@@ -65,6 +70,9 @@ const ViewItinerary = () => {
             tripAdvisorName: queryParams.get('tripAdvisorName') || '',
             tripAdvisorNumber: queryParams.get('tripAdvisorNumber') || '',
             cabs: queryParams.get('cabs') || '',
+            flights: queryParams.get('flights') || '',
+            totalTrips: parseInt(queryParams.get('totalTrips') || '0', 10),
+            totalReviews: parseInt(queryParams.get('totalReviews') || '0', 10),
             quotePrice: parseInt(queryParams.get('quotePrice') || '0', 10),
             days,
             hotels,
@@ -110,6 +118,20 @@ const ViewItinerary = () => {
                                 tailored just for you by Travel Trail Holidays, one of the most trusted names in
                                 travel!✨
                             </span>
+                            <div className='flex gap-10 items-center mt-5'>
+                                <div className='flex items-center gap-2 font-semibold'>
+                                    <FaSuitcase size={20}/>
+                                    {itineraryData?.totalTrips}+ Trip sold
+                                </div>
+                                <div className='flex items-center gap-2 font-semibold'>
+                                    <MdRateReview size={22}/>
+                                    {itineraryData?.totalReviews}+ Reviews
+                                </div>
+                                <div className='flex items-center gap-1 font-semibold'>
+                                    <AiFillThunderbolt size={22}/>
+                                    100% Super reviews
+                                </div>
+                            </div>
                             <div className="mt-10 flex flex-col gap-1">
                                 <span className="font-semibold text-xl">{itineraryData?.packageTitle}</span>
                                 <span className="font-semibold">
@@ -120,28 +142,6 @@ const ViewItinerary = () => {
                                 <span className="font-semibold">Quoted price:</span>
                                 <span>₹{itineraryData?.quotePrice}</span>
                             </div>
-                        </div>
-                    </div>
-                    <div className="px-5">
-                        <span className="text-3xl font-bold">Itinerary</span>
-                        <div className="h-[2px] w-full bg-border mt-2"></div>
-                        <div className="mt-7 flex flex-col gap-9">
-                            {itineraryData?.days.map((day, index) => (
-                                <div key={index}>
-                                    <div className="flex gap-2">
-                                        <span className="text-xl font-semibold min-w-[70px]">Day {index + 1}:</span>
-                                        <span className="text-xl">{day.summary}</span>
-                                    </div>
-                                    <img
-                                        src={day.imageSrc}
-                                        alt=""
-                                        width={1000}
-                                        height={1000}
-                                        className="w-full h-80 mt-2 object-cover"
-                                    />
-                                    <p className="mt-2">{day.description}</p>
-                                </div>
-                            ))}
                         </div>
                     </div>
                     <div className="px-5 py-5">
@@ -169,10 +169,39 @@ const ViewItinerary = () => {
                         </div>
                     </div>
                     <div className="px-5">
+                        <span className="text-3xl font-bold">Flights</span>
+                        <div className="h-[2px] w-full bg-border mt-2"></div>
+                        <div className="mt-3">
+                            <span className="text-lg">{itineraryData?.flights}</span>
+                        </div>
+                    </div>
+                    <div className="px-5">
                         <span className="text-3xl font-bold">Cabs</span>
                         <div className="h-[2px] w-full bg-border mt-2"></div>
                         <div className="mt-3">
                             <span className="text-lg">{itineraryData?.cabs}</span>
+                        </div>
+                    </div>
+                    <div className="px-5">
+                        <span className="text-3xl font-bold">Itinerary</span>
+                        <div className="h-[2px] w-full bg-border mt-2"></div>
+                        <div className="mt-7 flex flex-col gap-9">
+                            {itineraryData?.days.map((day, index) => (
+                                <div key={index}>
+                                    <div className="flex gap-2">
+                                        <span className="text-xl font-semibold min-w-[70px]">Day {index + 1}:</span>
+                                        <span className="text-xl">{day.summary}</span>
+                                    </div>
+                                    <img
+                                        src={day.imageSrc}
+                                        alt=""
+                                        width={1000}
+                                        height={1000}
+                                        className="w-full h-80 mt-2 object-cover"
+                                    />
+                                    <p className="mt-2">{day.description}</p>
+                                </div>
+                            ))}
                         </div>
                     </div>
                     <div className="px-5 flex gap-10">

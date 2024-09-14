@@ -16,6 +16,9 @@ interface ItineraryFormValues {
     tripAdvisorName: string;
     tripAdvisorNumber: string;
     cabs: string;
+    flights: string;
+    totalTrips: number;
+    totalReviews: number;
     quotePrice: number;
     days: Array<{
         dayNumber: number;
@@ -54,6 +57,9 @@ const CreateItinerary: React.FC = () => {
             tripAdvisorName: '',
             tripAdvisorNumber: '',
             cabs: '',
+            flights: '',
+            totalTrips: 0,
+            totalReviews: 0,
             quotePrice: 0,
             days: [{ dayNumber: 1, summary: '', imageSrc: '', description: '' }],
             hotels: [{ placeName: '', placeDescription: '', hotelName: '', roomType: '', hotelDescription: '' }],
@@ -116,6 +122,9 @@ const CreateItinerary: React.FC = () => {
         queryParams.append('tripAdvisorName', data.tripAdvisorName);
         queryParams.append('tripAdvisorNumber', data.tripAdvisorNumber);
         queryParams.append('cabs', data.cabs);
+        queryParams.append('flights', data.flights);
+        queryParams.append('totalTrips', data.totalTrips.toString());
+        queryParams.append('totalReviews', data.totalReviews.toString());
         queryParams.append('quotePrice', data.quotePrice.toString());
 
         window.open(`/itinerary/view-itinerary?${queryParams.toString()}`, '_blank');
@@ -278,6 +287,37 @@ const CreateItinerary: React.FC = () => {
                     />
                     {errors.cabs && <span className="text-red-500">{errors.cabs.message}</span>}
 
+                    <input
+                        {...register('flights', { required: 'Trip advisor name is required' })}
+                        placeholder="Flight details"
+                        className="border-neutral-200 dark:border-gray-800 border-2 px-2 py-3 rounded"
+                    />
+                    {errors.flights && <span className="text-red-500">{errors.flights.message}</span>}
+
+                    <div className='flex flex-col gap-3 relative w-full'>
+                        <input
+                            type="number"
+                            {...register('totalTrips', { valueAsNumber: true, min: 0 })}
+                            placeholder="Total No of Trips"
+                            className="border-neutral-200 dark:border-gray-800 border-2 pl-[110px] pr-2 py-3 rounded"
+                            readOnly
+                        />
+                        {errors.totalTrips && <span className="text-red-500">{errors.totalTrips.message}</span>}
+                        <div className="absolute top-1/2 -translate-y-1/2 left-3">Total Trips :</div>
+                    </div>
+                    
+                    <div className='flex flex-col gap-3 relative w-full'>
+                        <input
+                            type="number"
+                            {...register('totalReviews', { valueAsNumber: true, min: 0 })}
+                            placeholder="Total N0 of Reviews"
+                            className="border-neutral-200 dark:border-gray-800 border-2 pl-[135px] pr-2 py-3 rounded"
+                            readOnly
+                        />
+                        {errors.totalReviews && <span className="text-red-500">{errors.totalReviews.message}</span>}
+                        <div className="absolute top-1/2 -translate-y-1/2 left-3">Total Reviews :</div>
+                    </div>
+
                     <div className="flex flex-col gap-3 relative w-full">
                         <input
                             type="number"
@@ -301,7 +341,9 @@ const CreateItinerary: React.FC = () => {
                         placeholder="Trip advisor's number"
                         className="border-neutral-200 dark:border-gray-800 border-2 px-2 py-3 rounded"
                     />
-                    {errors.tripAdvisorNumber && <span className="text-red-500">{errors.tripAdvisorNumber.message}</span>}
+                    {errors.tripAdvisorNumber && (
+                        <span className="text-red-500">{errors.tripAdvisorNumber.message}</span>
+                    )}
 
                     <h2 className="text-2xl font-semibold mt-4">Day Details</h2>
                     {dayFields.map((field, index) => (
