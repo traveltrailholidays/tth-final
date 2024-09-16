@@ -58,8 +58,8 @@ const CreateItinerary: React.FC = () => {
             tripAdvisorNumber: '',
             cabs: '',
             flights: '',
-            totalTrips: 0,
-            totalReviews: 0,
+            totalTrips: 300,
+            totalReviews: 170,
             quotePrice: 0,
             days: [{ dayNumber: 1, summary: '', imageSrc: '', description: '' }],
             hotels: [{ placeName: '', placeDescription: '', hotelName: '', roomType: '', hotelDescription: '' }],
@@ -294,7 +294,7 @@ const CreateItinerary: React.FC = () => {
                     />
                     {errors.flights && <span className="text-red-500">{errors.flights.message}</span>}
 
-                    <div className='flex flex-col gap-3 relative w-full'>
+                    {/* <div className='flex flex-col gap-3 relative w-full'>
                         <input
                             type="number"
                             {...register('totalTrips', { valueAsNumber: true, min: 0 })}
@@ -304,9 +304,9 @@ const CreateItinerary: React.FC = () => {
                         />
                         {errors.totalTrips && <span className="text-red-500">{errors.totalTrips.message}</span>}
                         <div className="absolute top-1/2 -translate-y-1/2 left-3">Total Trips :</div>
-                    </div>
+                    </div> */}
                     
-                    <div className='flex flex-col gap-3 relative w-full'>
+                    {/* <div className='flex flex-col gap-3 relative w-full'>
                         <input
                             type="number"
                             {...register('totalReviews', { valueAsNumber: true, min: 0 })}
@@ -316,7 +316,7 @@ const CreateItinerary: React.FC = () => {
                         />
                         {errors.totalReviews && <span className="text-red-500">{errors.totalReviews.message}</span>}
                         <div className="absolute top-1/2 -translate-y-1/2 left-3">Total Reviews :</div>
-                    </div>
+                    </div> */}
 
                     <div className="flex flex-col gap-3 relative w-full">
                         <input
