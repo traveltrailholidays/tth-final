@@ -55,7 +55,7 @@ const GetInTouchFooter = () => {
                     <ActiveLink
                         href='https://www.google.com/maps/place/Travel+Trail+Holidays/@28.499434,77.311883,18z/data=!4m6!3m5!1s0x233345ea4f02dbf5:0x55345f187277ecd2!8m2!3d28.4994338!4d77.3118827!16s%2Fg%2F11y3rzvw5z?hl=en&entry=ttu'
                         exact
-                        text='Office No - 35, Gali No. 03, Block B, Molarband Extn, Badarpur, New Delhi - 110044'
+                        text='HOUSE NO A 317,BLOCK A,EKTA VIHAR EXTANSION, NATIONAL RAJDHANI PUBLIC SCHOOL, NEW DELHI, SOUTH EAST DELHI, DELHI, 110044'
                     />
                 </div>
             </div>
