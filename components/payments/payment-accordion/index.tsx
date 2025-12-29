@@ -20,19 +20,19 @@ export default function PaymentsAccordion() {
                                 <div className={`text-[17px] mt-5 flex flex-col gap-2`}>
                                     <div>
                                         <span className={`font-[500]`}>Bank Name: </span>
-                                        <span>IndusInd Bank</span>
+                                        <span>Axis Bank</span>
                                     </div>
                                     <div>
                                         <span className={`font-[500]`}>Account No: </span>
-                                        <span>259625992025</span>
+                                        <span>925020040226231</span>
                                     </div>
                                     <div>
                                         <span className={`font-[500]`}>Account Name: </span>
-                                        <span>Travel Trail Holidays Private Limited</span>
+                                        <span>TRAVEL TRAIL HOLIDAYS</span>
                                     </div>
                                     <div>
                                         <span className={`font-[500]`}>IFSC Code: </span>
-                                        <span>INDB0000735</span>
+                                        <span>UTIB0004799</span>
                                     </div>
                                 </div>
                             </div>

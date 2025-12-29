@@ -76,7 +76,7 @@ const UpiDetails = () => {
                     <span>Scan to pay with any BHIM UPI App:</span>
                 </div>
                 <Image 
-                    src={'/upi.jpg'}
+                    src={'/tth-upi.png'}
                     alt=''
                     width={200}
                     height={200}
@@ -86,7 +86,7 @@ const UpiDetails = () => {
                         Merchant: Travel Trail Holidays
                     </span>
                     <span>
-                        UPI ID: 9625992025@upi
+                        UPI ID: tra5165@axisbank
                     </span>
                 </div>
                 
